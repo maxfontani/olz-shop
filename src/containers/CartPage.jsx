@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import {
   Header,
@@ -6,14 +7,14 @@ import {
   Footer,
   CartProductHub,
 } from "../components/exports";
-import { useSelectorCartTotalPrice, useSelectorCart } from "../store/selectors";
+import { selectCartTotalPrice } from "../store/cartSlice";
+
 import cartImg from "../images/cart.png";
 
 import styles from "../styles/Home.module.css";
 
 function CartPage() {
-  const cart = useSelectorCart();
-  const totalPrice = useSelectorCartTotalPrice();
+  const totalPrice = useSelector(selectCartTotalPrice);
   return (
     <div className={styles.container}>
       <div className={styles.layout}>
@@ -34,7 +35,7 @@ function CartPage() {
               <NavLink to="/products">Магазине</NavLink>
             </p>
           )}
-          <CartProductHub cart={cart} />
+          <CartProductHub />
         </Content>
         <Footer />
       </div>

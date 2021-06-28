@@ -1,12 +1,14 @@
 import { format, parseJSON } from "date-fns";
-import { useStoreDispatch } from "../../store/context";
+import { useDispatch } from "react-redux";
+import { addById } from "../../store/cartSlice";
 import { NavLink } from "react-router-dom";
 import cartButton from "../../images/cart_button_green.png";
 import styles from "../../styles/Home.module.css";
 
 function ProductCard(props) {
   const { id, name, price, origin, createdAt, updatedAt } = props;
-  const { dispatch } = useStoreDispatch();
+  const dispatch = useDispatch();
+  console.log("CARD");
 
   return (
     <NavLink className={styles.navlink} to={`/products/${id}`}>
@@ -30,10 +32,9 @@ function ProductCard(props) {
           height="30"
           onClick={(e) => {
             e.preventDefault();
-            dispatch({
-              type: "addedToCart",
-              payload: { id, name, price, origin, createdAt, updatedAt },
-            });
+            dispatch(
+              addById({ id, name, price, origin, createdAt, updatedAt })
+            );
           }}
         />
       </div>

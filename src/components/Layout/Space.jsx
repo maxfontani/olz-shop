@@ -12,8 +12,14 @@ const SIZES = {
   giant: 128,
 };
 
-function Space(size) {
-  return <div style={{ height: SIZES[size], minHeight: SIZES[size] }} />;
+function Space({ size }) {
+  console.log("SPAC", size);
+  return (
+    <div
+      className="filler"
+      style={{ height: SIZES[size], minHeight: SIZES[size] }}
+    />
+  );
 }
 
 export default Space;

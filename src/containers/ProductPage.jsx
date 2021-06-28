@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   ProductView,
@@ -5,21 +6,30 @@ import {
   Menu,
   Content,
   Footer,
+  Error404,
 } from "../components/exports";
-import { useStoreDispatch } from "../store/context.js";
-import { useSelectorActiveProduct } from "../store/selectors.js";
+import { yalantisApi } from "../api/yalantisAPI";
 
 import styles from "../styles/Home.module.css";
-import { useState } from "react";
 
 function ProductPage() {
   const { productId } = useParams();
-  const { dispatchAsync } = useStoreDispatch();
-  const activeProduct = useSelectorActiveProduct();
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [product, setProduct] = useState(undefined);
 
-  useState(() => {
-    dispatchAsync({ type: "getProductById", payload: productId });
-  }, [productId]);
+  useEffect(() => {
+    yalantisApi.get(`/products/${productId}`).then(
+      (result) => {
+        setIsLoaded(true);
+        setProduct(result.data);
+      },
+      (error) => {
+        setIsLoaded(true);
+        setError(error);
+      }
+    );
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -27,7 +37,9 @@ function ProductPage() {
         <Header />
         <Menu />
         <Content>
-          {activeProduct && <ProductView product={activeProduct} />}
+          {error && <Error404 />}
+          {!isLoaded && <div>Loading...</div>}
+          {product && <ProductView product={product} />}
         </Content>
         <Footer />
       </div>

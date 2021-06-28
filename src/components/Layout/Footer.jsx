@@ -4,8 +4,8 @@ function Footer() {
   return (
     <div className={styles.footer}>
       <div className={styles.footerContent}>
-        <div>Inst</div>
-        <div>© 2021</div>
+        <div>All rights reserved.</div>
+        <div>l33t Inc. © 2021</div>
       </div>
     </div>
   );

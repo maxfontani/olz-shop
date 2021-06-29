@@ -1,8 +1,7 @@
-import { NavLink } from "react-router-dom";
-import { useLocation } from "react-router";
-import { CartHeader } from "../exports";
+import { NavLink, useLocation } from 'react-router-dom';
+import { CartHeader } from '../../pages/exports';
 
-import styles from "../../styles/Home.module.css";
+import styles from '../../styles/Home.module.css';
 
 function Menu() {
   const location = useLocation();
@@ -25,7 +24,7 @@ function Menu() {
         >
           Магазин
         </NavLink>
-        {location.pathname !== "/cart" && (
+        {location.pathname !== '/cart' && (
           <NavLink
             to="/cart"
             className={styles.navlink}

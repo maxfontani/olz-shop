@@ -1,12 +1,19 @@
-import { format, parseJSON } from "date-fns";
-import { useStoreDispatch } from "../../store/context";
-import { NavLink } from "react-router-dom";
-import cartButton from "../../images/cart_button_green.png";
-import styles from "../../styles/Home.module.css";
+import { format, parseJSON } from 'date-fns';
+import { NavLink } from 'react-router-dom';
+import useStoreDispatch from '../../../context/hooks/useStoreDispatch';
+import cartButton from '../../../images/cart_button_green.png';
+import styles from '../../../styles/Home.module.css';
 
-function ProductCard(props) {
-  const { id, name, price, origin, createdAt, updatedAt } = props;
+function ProductCard({
+  product: { id, name, price, origin, createdAt, updatedAt },
+}) {
   const { dispatch } = useStoreDispatch();
+  const addToCart = () => {
+    dispatch({
+      type: 'addedToCart',
+      payload: { id, name, price, origin, createdAt, updatedAt },
+    });
+  };
 
   return (
     <NavLink className={styles.navlink} to={`/products/${id}`}>
@@ -17,9 +24,12 @@ function ProductCard(props) {
           </p>
         </div>
         <hr></hr>
-        <p>{price + " $"}</p>
+        <p>
+          {price}
+          {' $'}
+        </p>
         <p>Origin: {origin}</p>
-        <p>{format(parseJSON(updatedAt), "PP")}</p>
+        <p>{format(parseJSON(updatedAt), 'PP')}</p>
 
         <img
           alt="add to cart"
@@ -30,10 +40,7 @@ function ProductCard(props) {
           height="30"
           onClick={(e) => {
             e.preventDefault();
-            dispatch({
-              type: "addedToCart",
-              payload: { id, name, price, origin, createdAt, updatedAt },
-            });
+            addToCart();
           }}
         />
       </div>

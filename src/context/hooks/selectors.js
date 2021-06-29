@@ -1,4 +1,4 @@
-import { useStoreState } from "./context";
+import useStoreState from './useStoreState';
 
 export function useSelectorActiveProduct() {
   const store = useStoreState();
@@ -12,24 +12,21 @@ export function useSelectorCart() {
 
 export function useSelectorCartTotalPrice() {
   const store = useStoreState();
-  const cart = store.data.cart;
+  const cart = { ...store.data.cart };
   if (!cart || cart.length === 0) {
     return 0;
-  } else {
-    let totalCartPrice = 0;
-    for (const id in cart) {
-      totalCartPrice =
-        totalCartPrice + cart[id]["product"]["price"] * cart[id]["count"];
-    }
-    return totalCartPrice;
   }
+  const totalCartPrice = Object.values(cart).reduce((acc, cur) => {
+    return acc + cur.product.price * cur.count;
+  }, 0);
+  return totalCartPrice;
 }
 
 export function useSelectorCartProducts() {
   const store = useStoreState();
   const cartIds = store.data.cart;
   const cartProducts = store.data.products.filter((product) =>
-    cartIds.includes(product.id)
+    cartIds.includes(product.id),
   );
   return cartProducts;
 }

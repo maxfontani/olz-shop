@@ -1,14 +1,14 @@
 import {
-  ProductHub,
   Header,
   Menu,
   Content,
   Sidebar,
   Footer,
-} from "../components/exports";
-import { useStoreState } from "../store/context.js";
+} from '../../components/exports';
+import { ProductHub } from '../exports';
+import useStoreState from '../../context/hooks/useStoreState';
 
-import styles from "../styles/Home.module.css";
+import styles from '../../styles/Home.module.css';
 
 function StorePage() {
   const store = useStoreState();

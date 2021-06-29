@@ -1,15 +1,13 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
+import { Header, Menu, Content, Footer } from '../../components/exports';
+import CartProductHub from './components/CartProductHub.jsx';
 import {
-  Header,
-  Menu,
-  Content,
-  Footer,
-  CartProductHub,
-} from "../components/exports";
-import { useSelectorCartTotalPrice, useSelectorCart } from "../store/selectors";
-import cartImg from "../images/cart.png";
+  useSelectorCartTotalPrice,
+  useSelectorCart,
+} from '../../context/hooks/selectors';
+import cartImg from '../../images/cart.png';
 
-import styles from "../styles/Home.module.css";
+import styles from '../../styles/Home.module.css';
 
 function CartPage() {
   const cart = useSelectorCart();
@@ -21,7 +19,7 @@ function CartPage() {
         <Menu />
         <Content>
           <h2>
-            Корзина товаров{" "}
+            Корзина товаров{' '}
             <img src={cartImg} alt="cart" width="30" height="30" />
           </h2>
           {totalPrice > 0 ? (

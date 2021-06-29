@@ -1,16 +1,16 @@
-import { useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { useStoreDispatch } from "../store/context.js";
-import { HomePage, ProductPage, StorePage, CartPage } from "./exports.js";
-import { Error404 } from "../components/exports";
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import useStoreDispatch from './context/hooks/useStoreDispatch';
+import { HomePage, ProductPage, StorePage, CartPage } from './pages/exports';
+import { Error404 } from './components/exports';
 
-import "../styles/globals.css";
+import './styles/globals.css';
 
 function App() {
   const { dispatchAsync } = useStoreDispatch();
 
   useEffect(() => {
-    dispatchAsync({ type: "getAllProducts" });
+    dispatchAsync({ type: 'getAllProducts' });
   }, []);
 
   return (

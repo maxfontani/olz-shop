@@ -1,20 +1,21 @@
+/*  eslint no-param-reassign: ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }] */
 import {
   createSlice,
   createAsyncThunk,
   createEntityAdapter,
 } from "@reduxjs/toolkit";
 
-import { yalantisApi } from "../api/yalantisAPI";
+import yalantisApi from "../services/api/axios";
 
 export const fetchProductsPage = createAsyncThunk(
   "products/fetchProductsPage",
   async (params) => {
     const query = {
-      page: params.page ?? 1,
-      perPage: params.perPage ?? 50,
-      origins: params.origins ?? "",
-      minPrice: params.minPrice ?? "",
-      maxPrice: params.maxPrice ?? "",
+      page: params.page || 1,
+      perPage: params.perPage || 50,
+      minPrice: params.minPrice,
+      maxPrice: params.maxPrice,
+      origins: params.origins,
     };
 
     const response = await yalantisApi.get("/products", {
@@ -23,7 +24,7 @@ export const fetchProductsPage = createAsyncThunk(
       },
     });
     return response.data;
-  }
+  },
 );
 
 const productsAdapter = createEntityAdapter({
@@ -44,6 +45,7 @@ export const {
 const productsSlice = createSlice({
   name: "products",
   initialState: productsAdapter.getInitialState({
+    total: 0,
     status: "idle",
     error: null,
   }),
@@ -55,8 +57,8 @@ const productsSlice = createSlice({
     },
     [fetchProductsPage.fulfilled]: (state, action) => {
       if (state.status === "loading") {
-        console.log("FULF PAY ", action.payload);
         productsAdapter.setAll(state, action.payload.items);
+        state.total = action.payload.totalItems;
         state.status = "succeeded";
       }
     },
@@ -69,13 +71,6 @@ const productsSlice = createSlice({
   },
 });
 
-// export const {
-//   productsCleared,
-// } = productsSlice.actions;
+export const selectProductsTotal = (state) => state.products.total;
 
 export default productsSlice.reducer;
-
-// export const reloadAllProducts = () => async (dispatch) => {
-//   dispatch(productsCleared());
-//   dispatch(fetchProducts());
-// };

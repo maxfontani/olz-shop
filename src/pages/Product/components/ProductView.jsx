@@ -1,6 +1,6 @@
 import { format, parseJSON } from "date-fns";
 
-import styles from "../../styles/Home.module.css";
+import styles from "../../../styles/Home.module.css";
 
 function ProductCard(props) {
   const { name, price, origin, updatedAt } = props.product;
@@ -10,7 +10,7 @@ function ProductCard(props) {
         <b>{name}</b>
       </p>
       <hr></hr>
-      <p>{price + " $"}</p>
+      <p>{`${price} $`}</p>
       <p>Origin: {origin}</p>
       <p>{format(parseJSON(updatedAt), "PP")}</p>
     </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const SIZES = {
   thin: 4,
@@ -13,7 +13,6 @@ const SIZES = {
 };
 
 function Space({ size }) {
-  console.log("SPAC", size);
   return (
     <div
       className="filler"

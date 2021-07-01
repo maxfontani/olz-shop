@@ -1,24 +1,22 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 import { format, parseJSON } from "date-fns";
-import { selectCountById } from "../../store/cartSlice";
 import {
-  setCountById,
+  selectCountById,
   decrementById,
   removeById,
   incrementById,
-} from "../../store/cartSlice";
-import { NavLink } from "react-router-dom";
-import cartButton from "../../images/cart_button_red.png";
-import add from "../../images/add.png";
-import remove from "../../images/remove.png";
+} from "../../../store/cartSlice";
+import cartButton from "../../../images/cart_button_red.png";
+import add from "../../../images/add.png";
+import remove from "../../../images/remove.png";
 
-import styles from "../../styles/Home.module.css";
+import styles from "../../../styles/Home.module.css";
 
 function CartProductCard({ id, amount, product }) {
   const dispatch = useDispatch();
   const count = useSelector((state) => selectCountById(state, id));
-  const subTotalPrice = product.price * count + ` $`;
+  const subTotalPrice = product.price * count;
 
   return (
     <div className={styles.cartProductCard}>
@@ -55,7 +53,7 @@ function CartProductCard({ id, amount, product }) {
           }}
         />
       </p>
-      <p>{count ? subTotalPrice : product.price}</p>
+      <p>{`${subTotalPrice} $`}</p>
       <p>Origin: {product.origin}</p>
       <p>Last update: {format(parseJSON(product.updatedAt), "PP")}</p>
 

@@ -1,9 +1,8 @@
-import { memo } from "react";
 import { useSelector } from "react-redux";
-import { CartProductCard } from "../exports";
-import { selectCartArr } from "../../store/cartSlice";
+import { CartProductCard } from "../../exports";
+import { selectCartArr } from "../../../store/cartSlice";
 
-import styles from "../../styles/Home.module.css";
+import styles from "../../../styles/Home.module.css";
 
 function CartProductHub() {
   const cartArr = useSelector(selectCartArr);

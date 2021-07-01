@@ -1,14 +1,17 @@
+import { NavLink } from "react-router-dom";
 import { format, parseJSON } from "date-fns";
 import { useDispatch } from "react-redux";
-import { addById } from "../../store/cartSlice";
-import { NavLink } from "react-router-dom";
-import cartButton from "../../images/cart_button_green.png";
-import styles from "../../styles/Home.module.css";
+import { addById } from "../../../store/cartSlice";
+import cartButton from "../../../images/cart_button_green.png";
 
-function ProductCard(props) {
-  const { id, name, price, origin, createdAt, updatedAt } = props;
+import styles from "../../../styles/Home.module.css";
+
+function ProductCard({ product }) {
+  const { id, name, price, origin, updatedAt } = product;
   const dispatch = useDispatch();
-  console.log("CARD");
+  const addToCart = () => {
+    dispatch(addById({ ...product }));
+  };
 
   return (
     <NavLink className={styles.navlink} to={`/products/${id}`}>
@@ -19,7 +22,7 @@ function ProductCard(props) {
           </p>
         </div>
         <hr></hr>
-        <p>{price + " $"}</p>
+        <p>{`${price} $`}</p>
         <p>Origin: {origin}</p>
         <p>{format(parseJSON(updatedAt), "PP")}</p>
 
@@ -32,9 +35,7 @@ function ProductCard(props) {
           height="30"
           onClick={(e) => {
             e.preventDefault();
-            dispatch(
-              addById({ id, name, price, origin, createdAt, updatedAt })
-            );
+            addToCart();
           }}
         />
       </div>

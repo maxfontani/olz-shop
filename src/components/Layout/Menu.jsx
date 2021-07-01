@@ -1,6 +1,5 @@
-import { NavLink } from "react-router-dom";
-import { useLocation } from "react-router";
-import { CartHeader } from "../exports";
+import { NavLink, useLocation } from "react-router-dom";
+import { CartHeader } from "../../pages/exports";
 
 import styles from "../../styles/Home.module.css";
 

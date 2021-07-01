@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
-  ProductView,
   Header,
   Menu,
   Content,
   Footer,
   Error404,
-} from "../components/exports";
-import { yalantisApi } from "../api/yalantisAPI";
+} from "../../components/exports";
+import { ProductView } from "../exports";
+import yalantisApi from "../../services/api/axios";
 
-import styles from "../styles/Home.module.css";
+import styles from "../../styles/Home.module.css";
 
 function ProductPage() {
   const { productId } = useParams();
@@ -24,11 +24,12 @@ function ProductPage() {
         setIsLoaded(true);
         setProduct(result.data);
       },
-      (error) => {
+      (err) => {
         setIsLoaded(true);
-        setError(error);
-      }
+        setError(err);
+      },
     );
+    return () => setProduct(undefined);
   }, []);
 
   return (

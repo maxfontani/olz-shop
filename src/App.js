@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import useStoreDispatch from './context/hooks/useStoreDispatch';
+import { HomePage, ProductPage, StorePage, CartPage } from './pages/exports';
+import { Error404 } from './components/exports';
+
+import './styles/globals.css';
 
 function App() {
+  const { dispatchAsync } = useStoreDispatch();
+
+  useEffect(() => {
+    dispatchAsync({ type: 'getAllProducts' });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/products/:productId">
+          <ProductPage />
+        </Route>
+        <Route path="/products">
+          <StorePage />
+        </Route>
+        <Route path="/cart">
+          <CartPage />
+        </Route>
+        <Route exact path="/">
+          <HomePage />
+        </Route>
+        <Route path="*">
+          <Error404 />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

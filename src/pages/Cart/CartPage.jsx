@@ -17,7 +17,7 @@ function CartPage() {
         <Menu />
         <Content>
           <h2>
-            Корзина товаров{" "}
+            Корзина товаров{' '}
             <img src={cartImg} alt="cart" width="30" height="30" />
           </h2>
           {totalPrice > 0 ? (

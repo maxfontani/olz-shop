@@ -24,7 +24,7 @@ function ProductCard({ product }) {
         <hr></hr>
         <p>{`${price} $`}</p>
         <p>Origin: {origin}</p>
-        <p>{format(parseJSON(updatedAt), "PP")}</p>
+        <p>{format(parseJSON(updatedAt), 'PP')}</p>
 
         <img
           alt="add to cart"

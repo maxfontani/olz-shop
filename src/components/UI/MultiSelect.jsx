@@ -10,28 +10,28 @@ const options = [
   { value: "usa", label: "США" },
 ];
 
-const MultiSelect = ({ control, setFilters }) => (
-  <Controller
-    name="origins"
-    control={control}
-    render={({ field }) => (
-      <Select
-        {...field}
-        className="multiSelect"
-        isMulti
-        options={options}
-        closeMenuOnSelect={false}
-        onChange={(selection) => {
-          field.onChange(selection);
-          const originsArr = selection.map((item) => item.value);
-          const originsStr = stringifyParamsArr(originsArr);
-          setFilters((state) => {
-            return { ...state, page: 1, origins: originsStr };
-          });
-        }}
-      />
-    )}
-  />
-);
-
-export default MultiSelect;
+export default function MultiSelect({ control, setFilters }) {
+  return (
+    <Controller
+      name="origins"
+      control={control}
+      render={({ field }) => (
+        <Select
+          {...field}
+          className="multiSelect"
+          isMulti
+          options={options}
+          closeMenuOnSelect={false}
+          onChange={(selection) => {
+            field.onChange(selection);
+            const originsArr = selection.map((item) => item.value);
+            const originsStr = stringifyParamsArr(originsArr);
+            setFilters((state) => {
+              return { ...state, page: 1, origins: originsStr };
+            });
+          }}
+        />
+      )}
+    />
+  );
+}

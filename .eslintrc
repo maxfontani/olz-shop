@@ -9,6 +9,7 @@
     },
       "rules": {
         "import/no-cycle": "off",
+        "import/prefer-default-export": "off",
         "no-unused-vars": "off",
         "prettier/prettier": ["off", { "singleQuote": true }]
       }

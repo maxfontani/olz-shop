@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useQuery from "./hooks/useQuery";
 import {
   fetchProductsPage,
   selectAllProducts,
@@ -10,12 +11,16 @@ import { StoreSidebar, ProductHub, NavBarTop, NavBarBottom } from "../exports";
 import styles from "../../styles/Home.module.css";
 
 function StorePage() {
+  const query = useQuery();
+  const editable = query.get("editable");
+
   const initialFilters = {
     page: 1,
     perPage: 50,
     origins: "",
     minPrice: "",
     maxPrice: "",
+    editable,
   };
   const [filters, setFilters] = useState(initialFilters);
   const [navBlock, setNavBlock] = useState(1);
@@ -23,6 +28,14 @@ function StorePage() {
   const products = useSelector(selectAllProducts);
 
   useEffect(() => {
+    if (filters.editable !== editable)
+      setFilters((state) => {
+        return { ...state, editable };
+      });
+  }, [editable]);
+
+  useEffect(() => {
+    console.log(filters);
     dispatch(fetchProductsPage(filters));
   }, [filters]);
 

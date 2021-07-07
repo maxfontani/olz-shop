@@ -1,0 +1,39 @@
+:root {
+  --dialog-inner-width: 80%;
+}
+
+.dialogOuter {
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+  max-width: 480px;
+  padding: 15px;
+}
+
+.dialogInner {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  border: none;
+  width: var(--dialog-inner-width);
+}
+
+.dialogHeader {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.dialogChildren {
+  width: 100%;
+}
+
+.closeButton {
+  margin-left: auto;
+}
+
+.dialogChildren button {
+  width: 50%;
+  max-width: 200px;
+}

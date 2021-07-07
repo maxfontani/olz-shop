@@ -7,12 +7,12 @@ import styles from "../../../styles/Home.module.css";
 function CartHeader() {
   const totalPrice = useSelector(selectCartTotalPrice);
   return (
-    <div className={styles.cartHeader}>
+    <div className={styles.menuHeader}>
       <img alt="cart" aria-label="cart" src={cart} height="20" width="20" />
       &nbsp;
-      <div className={styles.cartHeaderText}>
+      <div className={styles.menuHeaderText}>
         Корзина
-        <div className={styles.cartHeaderPrice}>
+        <div className={styles.menuHeaderPrice}>
           {totalPrice > 0 && <span>({`$ ${totalPrice}`})</span>}
         </div>
       </div>

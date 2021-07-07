@@ -48,7 +48,7 @@
 }
 
 .header {
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   color: var(--color-primary-3);
   height: 12%;
   min-height: 100px;
@@ -60,13 +60,14 @@
   justify-content: center;
 }
 
-.cartHeader {
+.menuHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
 }
 
-.cartHeaderPrice {
+.menuHeaderPrice {
   font-size: 12px;
   font-family: Consolas;
 }

@@ -5,7 +5,7 @@ import {
   createEntityAdapter,
 } from "@reduxjs/toolkit";
 
-import yalantisApi from "../services/api/axios";
+import { yalantisApi, yalantisApiAuth } from "../services/api/axios";
 
 export const fetchProductsPage = createAsyncThunk(
   "products/fetchProductsPage",
@@ -16,14 +16,29 @@ export const fetchProductsPage = createAsyncThunk(
       minPrice: params.minPrice,
       maxPrice: params.maxPrice,
       origins: params.origins,
+      editable: params.editable || false,
     };
 
-    const response = await yalantisApi.get("/products", {
+    const api = query.editable ? yalantisApiAuth : yalantisApi;
+    const response = await api.get("/products", {
       params: {
         ...query,
       },
     });
     return response.data;
+  },
+);
+
+export const addProductThunk = createAsyncThunk(
+  "products/addProductThunk",
+  async (newProduct) => {
+    // The value we return becomes the `fulfilled` action payload
+    try {
+      const response = await yalantisApiAuth.post("/products");
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   },
 );
 
@@ -51,6 +66,7 @@ const productsSlice = createSlice({
   }),
   reducers: {},
   extraReducers: {
+    // ON FETCH PRODUCTS
     [fetchProductsPage.pending]: (state) => {
       state.status = "loading";
       state.error = null;
@@ -63,6 +79,22 @@ const productsSlice = createSlice({
       }
     },
     [fetchProductsPage.rejected]: (state, action) => {
+      if (state.status === "loading") {
+        state.status = "failed";
+        state.error = action.payload;
+      }
+    },
+    // ON ADD PRODUCT
+    [addProductThunk.pending]: (state) => {
+      state.status = "loading";
+      state.error = null;
+    },
+    [addProductThunk.fulfilled]: (state, action) => {
+      if (state.status === "loading") {
+        state.status = "succeeded";
+      }
+    },
+    [addProductThunk.rejected]: (state, action) => {
       if (state.status === "loading") {
         state.status = "failed";
         state.error = action.payload;

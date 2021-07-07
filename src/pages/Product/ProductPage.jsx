@@ -8,7 +8,7 @@ import {
   Error404,
 } from "../../components/exports";
 import { ProductView } from "../exports";
-import yalantisApi from "../../services/api/axios";
+import { yalantisApi } from "../../services/api/axios";
 
 import styles from "../../styles/Home.module.css";
 

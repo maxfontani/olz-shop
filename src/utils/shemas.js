@@ -1,7 +1,26 @@
 import * as yup from "yup";
 
 export const BasicProductSchema = yup.object().shape({
-  title: yup.string().min(3).max(20).required(),
-  price: yup.number().positive().integer().required(),
-  origin: yup.string().required(),
+  title: yup
+    .string()
+    .min(3, "Введите от 3 до 20 символов")
+    .max(20, "Введите от 3 до 20 символов")
+    .matches(
+      /^[^0-9!"@#;:%^&*()=+\\/]+$/,
+      "Не должно сожержать цифр / спец. символов.",
+    )
+    .required("Это поле обязательное."),
+  price: yup
+    .number("Цена должна быть числом.")
+    .typeError("Цена должна быть числом.")
+    .positive("Цена должна быть положительной.")
+    .integer("Цена должна быть целым числом.")
+    .required("Это поле обязательное."),
+  origin: yup
+    .string()
+    .matches(
+      /^[^0-9!"@#;:%^&*()=+\\/]+$/,
+      "Не должно сожержать цифр / спец. символов.",
+    )
+    .required("Это поле обязательное."),
 });

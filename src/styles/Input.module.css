@@ -18,7 +18,7 @@
 }
 
 .label {
-  font-size: 12px;
+  font-size: 14px;
   color: black;
 }
 
@@ -54,4 +54,13 @@ input:focus::-webkit-input-placeholder {
   transition: transform 0.3s ease-in-out;
   width: 100%;
   height: 2px;
+}
+
+.input[invalid="true"] + .underline {
+  background-color: red;
+  transform: scaleX(1);
+}
+
+.input:disabled {
+  background-color: cadetblue;
 }

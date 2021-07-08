@@ -17,6 +17,7 @@
 .formTitle {
   font-size: 24px;
   font-weight: 700;
+  margin-bottom: 15px;
 }
 
 .formButton {
@@ -45,4 +46,12 @@
 .formButton[type="submit"]:hover {
   color: white;
   background-color: purple;
+}
+
+.formError {
+  align-self: flex-start;
+  font-size: 12px;
+  color: red;
+  margin-top: -10px;
+  margin-bottom: 10px;
 }

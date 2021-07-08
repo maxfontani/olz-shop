@@ -34,20 +34,44 @@ export default function EditProductForm({
       className={styles.formOuter}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className={styles.formTitle}>Новый товар</div>
+      <div className={styles.formTitle}>Редактировать товар</div>
       <InputLine
-        inputProps={{ ...register("title") }}
+        inputProps={{
+          ...register("title"),
+          invalid: errors.title ? "true" : "false",
+        }}
         labelText={"Название:"}
       />
-      <InputLine inputProps={{ ...register("price") }} labelText={"Цена:"} />
-      <InputLine inputProps={{ ...register("origin") }} labelText={"Регион:"} />
+      <InputLine
+        inputProps={{
+          ...register("price"),
+          invalid: errors.title ? "true" : "false",
+        }}
+        labelText={"Цена:"}
+      />
+      <InputLine
+        inputProps={{
+          ...register("origin"),
+          invalid: errors.title ? "true" : "false",
+        }}
+        labelText={"Регион:"}
+      />
 
       <button className={styles.formButton} type="submit">
         Сохранить
       </button>
       <button
         className={styles.formButton}
-        onClick={() => reset(defaultValues)}
+        onClick={() =>
+          reset(defaultValues, {
+            keepErrors: false,
+            keepDirty: false,
+            keepIsSubmitted: false,
+            keepTouched: false,
+            keepIsValid: false,
+            keepSubmitCount: false,
+          })
+        }
       >
         Сбросить
       </button>

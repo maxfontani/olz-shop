@@ -1,11 +1,15 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from "@reduxjs/toolkit";
 
-import productsReducer from './productsSlice';
-import cartReducer from './cartSlice';
+import shopReducer from "./shop/shopSlice";
+import cartReducer from "./cart/cartSlice";
+import filtersReducer from "./filters/filtersSlice";
+import productReducer from "./product/productSlice";
 
 export default configureStore({
   reducer: {
-    products: productsReducer,
+    shop: shopReducer,
     cart: cartReducer,
+    filters: filtersReducer,
+    product: productReducer,
   },
 });

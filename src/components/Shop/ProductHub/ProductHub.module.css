@@ -1,0 +1,14 @@
+.productHubOuter {
+  flex: 1 0 0;
+  margin: 1rem 0;
+}
+
+.productHub {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(var(--product-card-width), 100%), 1fr)
+  );
+  gap: 1rem;
+}

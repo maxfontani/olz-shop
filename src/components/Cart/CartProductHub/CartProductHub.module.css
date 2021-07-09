@@ -1,0 +1,10 @@
+.cartProductHub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.cartProductHub:last-child {
+  border-bottom: 2px solid black;
+}

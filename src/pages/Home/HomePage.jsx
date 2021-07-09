@@ -1,14 +1,15 @@
-import { NavLink } from "react-router-dom";
-import { Header, Menu, Content, Footer } from "../../components/exports";
+import { NavLink, useLocation } from "react-router-dom";
+import { Header, Menu, Content, Footer } from "../../components/Layout/index";
 
-import styles from "../../styles/Home.module.css";
+import styles from "../Pages.module.css";
 
 function HomePage() {
+  const location = useLocation();
   return (
     <div className={styles.container}>
       <div className={styles.layout}>
         <Header />
-        <Menu />
+        <Menu location={location} />
         <Content>
           <h2>Добро пожаловать в OZX SHOP!</h2>
           <p>

@@ -1,0 +1,13 @@
+.navBarTop {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.navBarTop input {
+  width: 45px;
+}
+
+.navBarTop input:not(:focus):not(:placeholder-shown):invalid {
+  border: 2px solid brown;
+}

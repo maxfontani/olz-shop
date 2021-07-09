@@ -1,0 +1,10 @@
+.cartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cartHeaderPrice {
+  font-size: 12px;
+  font-family: Consolas;
+}

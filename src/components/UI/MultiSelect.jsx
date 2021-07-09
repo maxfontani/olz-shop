@@ -1,16 +1,7 @@
-import React from "react";
 import { Controller } from "react-hook-form";
 import Select from "react-select";
-import stringifyParamsArr from "../../utils/helpers";
 
-const options = [
-  { value: "africa", label: "Африка" },
-  { value: "asia", label: "Азия" },
-  { value: "europe", label: "Европа" },
-  { value: "usa", label: "США" },
-];
-
-const MultiSelect = ({ control, setFilters }) => (
+const MultiSelect = ({ control, options, onChange }) => (
   <Controller
     name="origins"
     control={control}
@@ -23,11 +14,7 @@ const MultiSelect = ({ control, setFilters }) => (
         closeMenuOnSelect={false}
         onChange={(selection) => {
           field.onChange(selection);
-          const originsArr = selection.map((item) => item.value);
-          const originsStr = stringifyParamsArr(originsArr);
-          setFilters((state) => {
-            return { ...state, page: 1, origins: originsStr };
-          });
+          onChange(selection);
         }}
       />
     )}

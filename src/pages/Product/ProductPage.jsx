@@ -1,46 +1,41 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, useLocation } from "react-router-dom";
 import {
   Header,
   Menu,
   Content,
   Footer,
   Error404,
-} from "../../components/exports";
-import { ProductView } from "../exports";
-import yalantisApi from "../../services/api/axios";
+} from "../../components/Layout";
+import { fetchProduct } from "../../store/product/thunks";
+import { clearProduct } from "../../store/product/productSlice";
+import { selectProductState } from "../../store/product/selectors";
+import ProductView from "../../components/Product/index";
 
-import styles from "../../styles/Home.module.css";
+import styles from "../Pages.module.css";
 
 function ProductPage() {
   const { productId } = useParams();
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [product, setProduct] = useState(undefined);
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { product, error } = useSelector(selectProductState);
 
   useEffect(() => {
-    yalantisApi.get(`/products/${productId}`).then(
-      (result) => {
-        setIsLoaded(true);
-        setProduct(result.data);
-      },
-      (err) => {
-        setIsLoaded(true);
-        setError(err);
-      },
-    );
-    return () => setProduct(undefined);
+    dispatch(fetchProduct(productId));
+    return () => {
+      dispatch(clearProduct());
+    };
   }, []);
 
   return (
     <div className={styles.container}>
       <div className={styles.layout}>
         <Header />
-        <Menu />
+        <Menu location={location} />
         <Content>
           {error && <Error404 />}
-          {!isLoaded && <div>Loading...</div>}
-          {product && <ProductView product={product} />}
+          {!!product.id && <ProductView product={product} />}
         </Content>
         <Footer />
       </div>

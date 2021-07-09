@@ -1,23 +1,24 @@
 import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
-import { Header, Menu, Content, Footer } from "../../components/exports";
-import { CartProductHub } from "../exports";
-import { selectCartTotalPrice } from "../../store/cartSlice";
+import { NavLink, useLocation } from "react-router-dom";
+import { Header, Menu, Content, Footer } from "../../components/Layout";
+import { CartProductHub } from "../../components/Cart/index";
+import { selectCartTotalPrice } from "../../store/cart/selectors";
 
 import cartImg from "../../images/cart.png";
 
-import styles from "../../styles/Home.module.css";
+import styles from "../Pages.module.css";
 
 function CartPage() {
+  const location = useLocation();
   const totalPrice = useSelector(selectCartTotalPrice);
   return (
     <div className={styles.container}>
       <div className={styles.layout}>
         <Header />
-        <Menu />
+        <Menu location={location} />
         <Content>
           <h2>
-            Корзина товаров{' '}
+            Корзина товаров{" "}
             <img src={cartImg} alt="cart" width="30" height="30" />
           </h2>
           {totalPrice > 0 ? (

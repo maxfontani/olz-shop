@@ -1,0 +1,8 @@
+.navlink {
+  color: whitesmoke;
+  text-decoration: none;
+}
+
+.activeNavLink {
+  transform: scale(1.3);
+}

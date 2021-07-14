@@ -1,0 +1,8 @@
+.paginationLayout {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: flex-start;
+  width: 100%;
+  padding: 1.25rem;
+}

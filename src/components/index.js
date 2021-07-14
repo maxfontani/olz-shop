@@ -10,11 +10,12 @@ import Content from "./Content/Content.jsx";
 import Footer from "./Footer/Footer.jsx";
 import Error404 from "./Error404/Error404.jsx";
 
-// NAVBARS
-import NavBarTop from "./NavBar/NavBarTop/NavBarTop.jsx";
-import NavBarGoToPage from "./NavBar/NavBarGoToPage/NavBarGoToPage.jsx";
-import NavBarPerPage from "./NavBar/NavBarPerPage/NavBarPerPage.jsx";
-import NavBarBottom from "./NavBar/NavBarBottom/NavBarBottom.jsx";
+// PAGINATION & NAVBARS
+import Pagination from "./Pagination/Pagination.jsx";
+import NavBarTop from "./Pagination/NavBarTop/NavBarTop.jsx";
+import NavBarGoToPage from "./Pagination/NavBarGoToPage/NavBarGoToPage.jsx";
+import NavBarPerPage from "./Pagination/NavBarPerPage/NavBarPerPage.jsx";
+import NavBarBottom from "./Pagination/NavBarBottom/NavBarBottom.jsx";
 
 // UI
 import MultiSelect from "./UI/MultiSelect/MultiSelect.jsx";

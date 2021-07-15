@@ -7,7 +7,9 @@
       "es6": true,
       "browser": true
     },
-    "rules": {
-      "import/no-cycle": "off"
-    }
+      "rules": {
+        "import/no-cycle": "off",
+        "no-unused-vars": "off",
+        "prettier/prettier": ["off", { "singleQuote": true }]
+      }
   }

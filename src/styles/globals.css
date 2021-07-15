@@ -1,3 +1,13 @@
+/* Palette URL: http://paletton.com/#uid=14f0u0ky9mD3MuMoIqQO3hSZsaj */
+:root {
+  --color-primary-0: #290d7c;
+  --color-primary-2: #0b0327;
+  --color-primary-3: #1c0462;
+  --color-dark: #180657;
+  --product-card-width: 125px;
+  --sidebar-width: 350px;
+}
+
 html,
 body,
 #root {

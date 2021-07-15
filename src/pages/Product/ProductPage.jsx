@@ -1,33 +1,28 @@
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { Header, Menu, Content, Footer } from '../../components/exports';
-import ProductView from './components/ProductView.jsx';
-import useStoreDispatch from '../../context/hooks/useStoreDispatch';
-import { useSelectorActiveProduct } from '../../context/hooks/selectors';
-
-import styles from '../../styles/Home.module.css';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { Error404, ProductViewCard } from "../../components/index";
+import { fetchProduct } from "../../store/product/thunks";
+import { clearProduct } from "../../store/product/productSlice";
+import { selectProductState } from "../../store/product/selectors";
 
 function ProductPage() {
   const { productId } = useParams();
-  const { dispatch, dispatchAsync } = useStoreDispatch();
-  const activeProduct = useSelectorActiveProduct();
+  const dispatch = useDispatch();
+  const { product, error } = useSelector(selectProductState);
 
   useEffect(() => {
-    dispatchAsync({ type: 'getProductById', payload: productId });
-    return () => dispatch({ type: 'clearedActiveProduct' });
-  }, [productId]);
+    dispatch(fetchProduct(productId));
+    return () => {
+      dispatch(clearProduct());
+    };
+  }, []);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.layout}>
-        <Header />
-        <Menu />
-        <Content>
-          {activeProduct && <ProductView product={activeProduct} />}
-        </Content>
-        <Footer />
-      </div>
-    </div>
+    <>
+      {error && <Error404 />}
+      {!!product.id && <ProductViewCard product={product} />}
+    </>
   );
 }
 

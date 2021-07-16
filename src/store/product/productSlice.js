@@ -1,4 +1,4 @@
-/* eslint no-param-reassign: ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }] */
+/* eslint no-param-reassign: ["off", { "props": true, "ignorePropertyModificationsFor": ["state"] }] */
 
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchProduct } from "./thunks";
@@ -14,7 +14,7 @@ export const productSlice = createSlice({
   initialState,
   reducers: {
     CLEARED: (state) => {
-      state.product = {};
+      state = { ...state, ...initialState };
     },
   },
   extraReducers: {
@@ -25,12 +25,12 @@ export const productSlice = createSlice({
     [fetchProduct.fulfilled]: (state, action) => {
       if (state.status === "loading") {
         state.product = action.payload;
-        state.status = "succeeded";
+        state.status = "success";
       }
     },
     [fetchProduct.rejected]: (state, action) => {
       if (state.status === "loading") {
-        state.status = "failed";
+        state.status = "error";
         state.error = action.payload;
       }
     },

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import yalantisApi from "../../services/api/axios";
+import { yalantisApi } from "../../services/api/axios";
 
 export const fetchProduct = createAsyncThunk(
   "product/fetchProduct",

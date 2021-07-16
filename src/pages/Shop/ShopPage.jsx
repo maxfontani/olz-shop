@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useQuery from "../../hooks/useQuery";
 import { fetchShopPage } from "../../store/shop/thunks";
 import { selectAllProducts, selectShopTotal } from "../../store/shop/selectors";
 import { selectFilters } from "../../store/filters/selectors";
@@ -16,11 +17,17 @@ import ShopSidebar from "./ShopSidebar/ShopSidebar.jsx";
 import styles from "./ShopPage.module.css";
 
 function ShopPage() {
+  const query = useQuery();
+  const editable = query.get("editable") === "true";
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts);
   const filters = useSelector(selectFilters);
   const total = useSelector(selectShopTotal);
   const lastPage = calcLastPage(total, filters.perPage);
+
+  useEffect(() => {
+    dispatch(fetchShopPage({ ...filters, editable }));
+  }, [filters, editable]);
 
   const setPageHandler = (navPage) => {
     dispatch(setFiltersPage(navPage));
@@ -54,10 +61,6 @@ function ShopPage() {
     dispatch(resetFilters());
   }, []);
 
-  useEffect(() => {
-    dispatch(fetchShopPage(filters));
-  }, [filters]);
-
   return (
     <div className={styles.split}>
       <ShopSidebar
@@ -78,7 +81,7 @@ function ShopPage() {
           nextPageHandler={nextPageHandler}
           lastPage={lastPage}
         >
-          <ProductHub products={products} />{" "}
+          <ProductHub products={products} filters={filters} />{" "}
         </Pagination>
       )}
     </div>

@@ -1,3 +1,18 @@
+export function getLabelByOrigin(origin) {
+  switch (origin) {
+    case "africa" || "Africa":
+      return "Африка";
+    case "asia" || "Asia":
+      return "Азия";
+    case "europe" || "Europe":
+      return "Европа";
+    case "usa" || "Usa":
+      return "США";
+    default:
+      return origin;
+  }
+}
+
 export function stringifyParamsArr(arr) {
   if (!arr || typeof arr !== "object" || !arr.length) return "";
   if (arr.length === 1) return arr[0].toString();
@@ -6,6 +21,14 @@ export function stringifyParamsArr(arr) {
     str = str.concat(",", val.toString());
   });
   return str;
+}
+
+export function originsToSelectOptions(arr) {
+  if (!arr || typeof arr !== "object" || !arr.length) return [];
+  const originsSelect = arr.map((val) => {
+    return { value: val.value, label: getLabelByOrigin(val.value) };
+  });
+  return originsSelect;
 }
 
 export function calcLastPage(total, perPage) {

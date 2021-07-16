@@ -1,7 +1,14 @@
-import axios from 'axios';
+import axios from "axios";
 
 const yalantisApi = axios.create({
-  baseURL: 'https://yalantis-react-school-api.yalantis.com/api/v1',
+  baseURL: "https://yalantis-react-school-api.yalantis.com/api/v1",
 });
 
-export default yalantisApi;
+const yalantisApiAuth = axios.create({
+  baseURL: "https://yalantis-react-school-api.yalantis.com/api/v1",
+  headers: {
+    Authorization: process.env.REACT_APP_YALANTIS_API,
+  },
+});
+
+export { yalantisApi, yalantisApiAuth };

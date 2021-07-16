@@ -38,6 +38,7 @@ export const filtersSlice = createSlice({
       const maxPrice = action.payload;
       state.maxPrice = maxPrice;
     },
+
     RESET: (state) => initialState,
   },
 });

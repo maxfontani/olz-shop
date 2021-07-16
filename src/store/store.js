@@ -4,6 +4,7 @@ import shopReducer from "./shop/shopSlice";
 import cartReducer from "./cart/cartSlice";
 import filtersReducer from "./filters/filtersSlice";
 import productReducer from "./product/productSlice";
+import myProductReducer from "./myProduct/myProductSlice";
 
 export default configureStore({
   reducer: {
@@ -11,5 +12,6 @@ export default configureStore({
     cart: cartReducer,
     filters: filtersReducer,
     product: productReducer,
+    myProduct: myProductReducer,
   },
 });

@@ -13,7 +13,7 @@ export const myProductSlice = createSlice({
   name: "myProduct",
   initialState,
   reducers: {
-    ADDED: (state, action) => {
+    SET: (state, action) => {
       const product = action.payload;
       state.myProduct = product;
     },
@@ -55,7 +55,7 @@ export const myProductSlice = createSlice({
   },
 });
 
-export const { CLEARED: clearMyProduct, ADDED: addMyProduct } =
+export const { CLEARED: clearMyProduct, SET: setMyProduct } =
   myProductSlice.actions;
 
 export default myProductSlice.reducer;

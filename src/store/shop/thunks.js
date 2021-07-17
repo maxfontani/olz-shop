@@ -25,3 +25,28 @@ export const fetchShopPage = createAsyncThunk(
     }
   },
 );
+
+export const refreshShopPage = createAsyncThunk(
+  "shop/refreshShopPage",
+  async () => {
+    const query = {
+      page: params.page || 1,
+      perPage: params.perPage || 50,
+      minPrice: params.minPrice,
+      maxPrice: params.maxPrice,
+      origins: params.origins,
+      editable: params.editable || false,
+    };
+    try {
+      const api = query.editable ? yalantisApiAuth : yalantisApi;
+      const response = await api.get("/products", {
+        params: {
+          ...query,
+        },
+      });
+      return response.data || {};
+    } catch (error) {
+      return error;
+    }
+  },
+);

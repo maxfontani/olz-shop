@@ -42,3 +42,15 @@ export function range(start, stop, step) {
     (_, i) => start + i * step,
   );
 }
+
+export function calcTotalPrice(productArr) {
+  if (!productArr || !productArr.length) return 0;
+  const totalCartPrice = productArr.reduce((acc, cur) => {
+    return acc + cur.product.price * cur.count;
+  }, 0);
+  return totalCartPrice;
+}
+
+export function copyToClipboard(text) {
+  window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+}

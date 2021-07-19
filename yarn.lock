@@ -1534,6 +1534,34 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
+"@reach/accordion@^0.15.3":
+  version "0.15.3"
+  resolved "https://registry.yarnpkg.com/@reach/accordion/-/accordion-0.15.3.tgz#bdd87844167c70a3c4a5477d403a047c36993c79"
+  integrity sha512-9y4VjSFOUTXOV8jowIYqV4PMsuqmbnuZL3FBfiBLx44/olY6OnvGzq2247P7DSoMo407S/zk5qSrd4ZnRbEUlA==
+  dependencies:
+    "@reach/auto-id" "0.15.3"
+    "@reach/descendants" "0.15.3"
+    "@reach/utils" "0.15.3"
+    prop-types "^15.7.2"
+    tiny-warning "^1.0.3"
+    tslib "^2.3.0"
+
+"@reach/auto-id@0.15.3":
+  version "0.15.3"
+  resolved "https://registry.yarnpkg.com/@reach/auto-id/-/auto-id-0.15.3.tgz#23b6ae8de3bf7520044c95a85c992ae46cdcef9c"
+  integrity sha512-lbLUI9mrn74qVis141ib0Rsyhgk+gzUMtpplRmjy06cUWDFZyiBATNWMUxN5T+0fU4tpfgcjkAuPeTCCGThKtQ==
+  dependencies:
+    "@reach/utils" "0.15.3"
+    tslib "^2.3.0"
+
+"@reach/descendants@0.15.3":
+  version "0.15.3"
+  resolved "https://registry.yarnpkg.com/@reach/descendants/-/descendants-0.15.3.tgz#818522e54a66e3e577970e25aa7226645e22aabc"
+  integrity sha512-vuCBG7Uru6IEJ2wvTd7L2xumbYzv2UYBduZ0E1FEABqyUo78eTIZbRcwIN73IxMcivjWipBPlcLLkpFtJKMPew==
+  dependencies:
+    "@reach/utils" "0.15.3"
+    tslib "^2.3.0"
+
 "@reach/dialog@^0.15.3":
   version "0.15.3"
   resolved "https://registry.yarnpkg.com/@reach/dialog/-/dialog-0.15.3.tgz#5486905d353c852ee92ad5161f87ba17ee428095"

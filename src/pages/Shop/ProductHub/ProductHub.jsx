@@ -1,69 +1,71 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectMyProductState } from "../../../store/myProduct/selectors";
+import { selectMyProductState } from "../../../store/products/selectors";
 import { addById } from "../../../store/cart/cartSlice";
-import { fetchShopPage } from "../../../store/shop/thunks";
-import { editMyProduct } from "../../../store/myProduct/thunks";
+import { editMyProduct } from "../../../store/products/thunks";
 import {
-  clearMyProduct,
   setMyProduct,
-} from "../../../store/myProduct/myProductSlice";
+  clearMyProduct,
+} from "../../../store/products/productsSlice";
 import { asyncOptionsLoader } from "../../../services/api/calls";
 import AsyncFormWrapper from "../../../components/Form/AsyncFormWrapper/AsyncFormWrapper.jsx";
 import {
   ProductCard,
   DialogWrapper,
   EditProductForm,
+  MessageError,
 } from "../../../components/index";
 
 import styles from "./ProductHub.module.css";
 
-function ProductHub({ products, filters }) {
+function ProductHub({ products }) {
   const dispatch = useDispatch();
   const { status, error, myProduct } = useSelector(selectMyProductState);
   const [showDialog, setShowDialog] = useState(false);
-
-  useEffect(() => {
-    if (status === "success") {
-      dispatch(fetchShopPage({ ...filters, editable: true }));
-      dispatch(clearMyProduct());
-    }
-  }, [status]);
 
   const addToCart = (event, productObj) => {
     event.preventDefault();
     dispatch(addById({ ...productObj }));
   };
-  const onEdit = (event, product) => {
-    console.log(
-      "🚀 ~ file: ProductHub.jsx ~ line 28 ~ onEdit ~ product",
-      product,
-    );
+  const onOpenEdit = (event, product) => {
     event.preventDefault();
     dispatch(setMyProduct(product));
     setShowDialog(true);
   };
 
-  const submitFormHandler = async (id, data) => {
+  const submitEditFormHandler = async (id, data) => {
     const product = {
       name: data.title,
       price: data.price,
       origin: data.origins.value,
     };
-    dispatch(editMyProduct({ id, product }));
+    dispatch(editMyProduct({ id, product, dispatch }));
+  };
+
+  const dialogDismissHandler = () => {
+    dispatch(clearMyProduct());
+    setShowDialog(false);
   };
 
   return (
     <div className={styles.productHubOuter}>
-      <DialogWrapper showDialog={showDialog} setShowDialog={setShowDialog}>
+      <DialogWrapper
+        showDialog={showDialog}
+        dismissHandler={dialogDismissHandler}
+      >
         <AsyncFormWrapper
           status={status}
           success="Товар успешно отредактирован!"
-          error={error}
+          error={`Ошибка!
+          ${error}
+          Возможные причины:
+          - такой товар уже существует
+          - нет Интернет соединения
+          `}
         >
           <EditProductForm
             product={myProduct}
-            submitFormHandler={submitFormHandler}
+            submitFormHandler={submitEditFormHandler}
             asyncOptionsLoader={asyncOptionsLoader}
           />
         </AsyncFormWrapper>
@@ -75,7 +77,7 @@ function ProductHub({ products, filters }) {
               key={product.id}
               product={product}
               onAddToCart={(event) => addToCart(event, product)}
-              onEdit={onEdit}
+              onOpenEdit={onOpenEdit}
             />
           ))}
       </div>

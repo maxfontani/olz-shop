@@ -28,7 +28,7 @@ const shopSlice = createSlice({
       state.error = null;
     },
     [fetchShopPage.fulfilled]: (state, action) => {
-      if (state.status === "loading") {
+      if (state.status === "loading" && action.payload?.items) {
         shopAdapter.setAll(state, action.payload.items);
         state.total = action.payload.totalItems;
         state.status = "succeeded";
@@ -36,8 +36,8 @@ const shopSlice = createSlice({
     },
     [fetchShopPage.rejected]: (state, action) => {
       if (state.status === "loading") {
-        state.status = "failed";
-        state.error = action.payload;
+        state.status = "error";
+        state.error = action.error?.message;
       }
     },
   },

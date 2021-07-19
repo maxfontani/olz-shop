@@ -22,16 +22,16 @@ const CartProductCard = ({
       </NavLink>
     </div>
     <p className={styles.cartProductCardAmount}>
-      {amount > 1 && (
-        <img
-          src={remove}
-          alt="уменьшить"
-          aria-label="уменьшить количество единиц товара"
-          width="15"
-          height="15"
-          onClick={() => onDecr(id)}
-        />
-      )}
+      <img
+        className={amount === 1 ? styles.invisible : undefined}
+        src={remove}
+        alt="уменьшить"
+        aria-label="уменьшить количество единиц товара"
+        width="15"
+        height="15"
+        onClick={() => onDecr(id)}
+      />
+
       <span>&times; {amount}</span>
       <img
         src={add}

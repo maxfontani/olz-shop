@@ -2,7 +2,11 @@ import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useQuery from "../../hooks/useQuery";
 import { fetchShopPage } from "../../store/shop/thunks";
-import { selectAllProducts, selectShopTotal } from "../../store/shop/selectors";
+import {
+  selectAllProducts,
+  selectShopTotal,
+  selectShopStatus,
+} from "../../store/shop/selectors";
 import { selectFilters } from "../../store/filters/selectors";
 import {
   setFilters,
@@ -10,20 +14,21 @@ import {
   resetFilters,
 } from "../../store/filters/filtersSlice";
 import { stringifyParamsArr, calcLastPage } from "../../utils/helpers";
-import Pagination from "../../components/Pagination/Pagination.jsx";
+import { Pagination, MessageError } from "../../components/index";
 import ProductHub from "./ProductHub/ProductHub.jsx";
 import ShopSidebar from "./ShopSidebar/ShopSidebar.jsx";
 
 import styles from "./ShopPage.module.css";
 
 function ShopPage() {
-  const query = useQuery();
-  const editable = query.get("editable") === "true";
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts);
   const filters = useSelector(selectFilters);
   const total = useSelector(selectShopTotal);
   const lastPage = calcLastPage(total, filters.perPage);
+  const [shopStatus, shopError] = useSelector(selectShopStatus);
+  const query = useQuery();
+  const editable = query.get("editable");
 
   useEffect(() => {
     dispatch(fetchShopPage({ ...filters, editable }));
@@ -71,6 +76,9 @@ function ShopPage() {
         onSubmit={sidebarMultiSelectSubmitHandler}
         onReset={onResetFilters}
       />
+      {shopStatus === "error" && (
+        <MessageError message={`Ошибка соединения. ${shopError}`} />
+      )}
       {products.length > 0 && (
         <Pagination
           showNavBars={"both"}

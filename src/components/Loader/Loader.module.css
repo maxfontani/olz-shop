@@ -16,7 +16,7 @@
   border-color: var(--color-primary-3) transparent transparent
     var(--color-primary-3);
   border-radius: 50%;
-  animation: thing 5s cubic-bezier(0.35, -0.14, 0.79, 1.22) infinite;
+  animation: thing 0.75s cubic-bezier(0.35, -0.14, 0.79, 1.22) infinite;
 }
 
 @keyframes thing {

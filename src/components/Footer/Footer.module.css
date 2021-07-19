@@ -12,3 +12,9 @@
   justify-content: space-between;
   width: 90%;
 }
+
+.footerContent a {
+  cursor: pointer;
+  text-decoration: none;
+  color: whitesmoke;
+}

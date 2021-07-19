@@ -25,7 +25,6 @@ const AsyncSel = ({
             "Список пуст. Проверьте Интернет соединение.."
           }
           isMulti={isMulti}
-          cacheOptions
           defaultOptions
           loadOptions={loadOptions}
         />

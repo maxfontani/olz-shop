@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { postMyProduct } from "../../../store/myProduct/thunks";
-import { clearMyProduct } from "../../../store/myProduct/myProductSlice";
-import { selectMyProductState } from "../../../store/myProduct/selectors";
+import { postMyProduct } from "../../../store/products/thunks";
+import { clearMyProduct } from "../../../store/products/productsSlice";
+import { selectMyProductStatus } from "../../../store/products/selectors";
 import { asyncOptionsLoader } from "../../../services/api/calls";
 import { DialogWrapper, AsyncFormWrapper, AddProductForm } from "../../index";
 import add from "../../../images/add.png";
@@ -11,13 +11,10 @@ import styles from "../Menu.module.css";
 
 function MenuItemAddProduct() {
   const dispatch = useDispatch();
-  const { status, error } = useSelector(selectMyProductState);
+  const [status, error] = useSelector(selectMyProductStatus);
   const [showDialog, setShowDialog] = useState(false);
 
-  const openDialog = () => {
-    dispatch(clearMyProduct());
-    setShowDialog(true);
-  };
+  const openDialog = () => setShowDialog(true);
 
   const submitFormHandler = async (data) => {
     const product = {
@@ -25,16 +22,28 @@ function MenuItemAddProduct() {
       price: data.price,
       origin: data.origins.value,
     };
-    dispatch(postMyProduct(product));
+    dispatch(postMyProduct({ product, dispatch }));
+  };
+
+  const dialogDismissHandler = () => {
+    dispatch(clearMyProduct());
+    setShowDialog(false);
   };
 
   return (
     <div className={styles.navlink} onClick={openDialog}>
-      <DialogWrapper showDialog={showDialog} setShowDialog={setShowDialog}>
+      <DialogWrapper
+        showDialog={showDialog}
+        dismissHandler={dialogDismissHandler}
+      >
         <AsyncFormWrapper
           status={status}
           success="Товар добавлен успешно!"
-          error={error}
+          error={`Ошибка!
+          ${error}
+          Возможные причины:
+          - товар уже существует
+          - нет Интернет соединения`}
         >
           <AddProductForm
             submitFormHandler={submitFormHandler}

@@ -7,7 +7,7 @@ import cartButtonImg from "../../../images/cart_button_green.png";
 
 import styles from "./ProductCard.module.css";
 
-const ProductCard = ({ product, onAddToCart, onEdit }) => (
+const ProductCard = ({ product, onAddToCart, onOpenEdit }) => (
   <NavLink className={styles.navlink} to={`/products/${product.id}`}>
     <div className={styles.productCard}>
       <div className={styles.productCardTitle}>
@@ -28,7 +28,7 @@ const ProductCard = ({ product, onAddToCart, onEdit }) => (
           src={editButtonImg}
           width="32"
           height="32"
-          onClick={(e) => onEdit(e, product)}
+          onClick={(e) => onOpenEdit(e, product)}
         />
       ) : (
         <img

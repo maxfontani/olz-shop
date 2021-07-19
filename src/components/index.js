@@ -5,7 +5,7 @@ import ProductViewCard from "./Card/ProductViewCard/ProductViewCard.jsx";
 
 // LAYOUT
 import Header from "./Header/Header.jsx";
-import Menu from "./Menu/index.jsx";
+import Menu from "./Menu/Menu.jsx";
 import Content from "./Content/Content.jsx";
 import Footer from "./Footer/Footer.jsx";
 import Error404 from "./Error404/Error404.jsx";
@@ -31,6 +31,7 @@ import EditProductForm from "./Form/EditProductForm/EditProductForm .jsx";
 import AsyncSel from "./UI/AsyncSel/AsyncSel.jsx";
 import MultiSelect from "./UI/MultiSelect/MultiSelect.jsx";
 import InputLine from "./UI/InputLine/InputLine.jsx";
+import SearchField from "./UI/SearchField/SearchField.jsx";
 
 export {
   CartProductCard,
@@ -57,4 +58,5 @@ export {
   AsyncSel,
   MultiSelect,
   InputLine,
+  SearchField,
 };

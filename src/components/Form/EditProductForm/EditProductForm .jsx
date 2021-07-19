@@ -91,6 +91,7 @@ export default function EditProductForm({
         Сохранить
       </button>
       <button
+        type="button"
         className={styles.formButton}
         disabled={isSubmitting || !isDirty}
         onClick={() => {

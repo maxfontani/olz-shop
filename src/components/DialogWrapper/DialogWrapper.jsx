@@ -7,17 +7,15 @@ import styles from "./DialogWrapper.module.css";
 export default function DialogWrapper({
   children,
   showDialog,
-  setShowDialog,
+  dismissHandler,
   noCloseButton,
 }) {
-  const close = () => setShowDialog(false);
-
   return (
     <Dialog
       className={styles.dialogOuter}
       aria-label="Modal dialog"
       isOpen={showDialog}
-      onDismiss={close}
+      onDismiss={dismissHandler}
     >
       {!noCloseButton && (
         <img
@@ -26,7 +24,7 @@ export default function DialogWrapper({
           width="32"
           height="32"
           alt="закрыть"
-          onClick={close}
+          onClick={dismissHandler}
         />
       )}
       <div className={styles.dialogInner}>

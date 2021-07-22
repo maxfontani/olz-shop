@@ -17,6 +17,7 @@ function OrdersPage() {
   const ordersArr = useSelector(selectOrdersHistoryArr);
   const [status, error] = useSelector(selectOrdersHistoryStatus);
   const [byId, setById] = useState(false);
+  const noOrders = status === "success" && ordersArr.length === 0;
 
   useEffect(() => {
     dispatch(fetchOrdersHistory());
@@ -27,52 +28,13 @@ function OrdersPage() {
     setById(true);
   };
 
-  function renderOrders() {
-    switch (status) {
-      case "loading":
-        return <Loader />;
-      case "error":
-        return (
-          <MessageError
-            message={`Ошибка соединения.
-            ${error}`}
-          />
-        );
-      case "success": {
-        const noOrders = status === "success" && ordersArr.length === 0;
-        return noOrders ? (
-          <p>
-            Разместите свой первый заказ, выбрав интересующие Вас товары в
-            нашем&nbsp;
-            <NavLink to="/products">Магазине</NavLink>
-          </p>
-        ) : (
-          <div>
-            <SearchField
-              inputProps={{ placeholder: "Введите ID" }}
-              labelText="Искать заказ по ID"
-              searchHandler={findOrder}
-            />
-            {byId && (
-              <button
-                className={styles.showAllOrdersButton}
-                onClick={() => {
-                  setById(false);
-                  dispatch(fetchOrdersHistory());
-                }}
-              >
-                Показать всю историю
-              </button>
-            )}
-            <hr />
-            <OrdersHub ordersArr={ordersArr} />
-          </div>
-        );
-      }
-      default:
-        return null;
-    }
-  }
+  if (status === "error")
+    return (
+      <MessageError
+        message={`Ошибка соединения.
+      ${error}`}
+      />
+    );
 
   return (
     <>
@@ -80,7 +42,35 @@ function OrdersPage() {
         История заказов{" "}
         <img src={folderImg} alt="orders" width="32" height="32" />
       </h2>
-      {renderOrders()}
+      {status === "loading" && <Loader />}
+      {noOrders ? (
+        <p>
+          Разместите свой первый заказ, выбрав интересующие Вас товары в
+          нашем&nbsp;
+          <NavLink to="/products">Магазине</NavLink>
+        </p>
+      ) : (
+        <div>
+          <SearchField
+            inputProps={{ placeholder: "Введите ID" }}
+            labelText="Искать заказ по ID"
+            searchHandler={findOrder}
+          />
+          {byId && (
+            <button
+              className={styles.showAllOrdersButton}
+              onClick={() => {
+                setById(false);
+                dispatch(fetchOrdersHistory());
+              }}
+            >
+              Показать всю историю
+            </button>
+          )}
+          <hr />
+          <OrdersHub ordersArr={ordersArr} />
+        </div>
+      )}
     </>
   );
 }

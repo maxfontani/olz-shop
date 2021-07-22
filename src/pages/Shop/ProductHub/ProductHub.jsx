@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectMyProductState } from "../../../store/products/selectors";
 import { addById } from "../../../store/cart/cartSlice";
@@ -12,8 +12,7 @@ import AsyncFormWrapper from "../../../components/Form/AsyncFormWrapper/AsyncFor
 import {
   ProductCard,
   DialogWrapper,
-  EditProductForm,
-  MessageError,
+  ProductForm,
 } from "../../../components/index";
 
 import styles from "./ProductHub.module.css";
@@ -33,7 +32,7 @@ function ProductHub({ products }) {
     setShowDialog(true);
   };
 
-  const submitEditFormHandler = async (id, data) => {
+  const submitEditFormHandler = async (data, id) => {
     const product = {
       name: data.title,
       price: data.price,
@@ -63,7 +62,7 @@ function ProductHub({ products }) {
           - нет Интернет соединения
           `}
         >
-          <EditProductForm
+          <ProductForm
             product={myProduct}
             submitFormHandler={submitEditFormHandler}
             asyncOptionsLoader={asyncOptionsLoader}

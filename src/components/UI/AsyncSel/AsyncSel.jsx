@@ -10,6 +10,7 @@ const AsyncSel = ({
   placeholder,
   control,
   loadOptions,
+  errors,
 }) => (
   <div className={styles.asyncSelectOuter}>
     <label htmlFor={name}>{labelText}</label>
@@ -30,6 +31,11 @@ const AsyncSel = ({
         />
       )}
     />
+    {errors?.origins && (
+      <div className={styles.asyncSelectError}>
+        {errors.origins.value?.message}
+      </div>
+    )}
   </div>
 );
 

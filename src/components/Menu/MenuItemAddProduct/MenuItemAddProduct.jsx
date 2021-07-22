@@ -4,7 +4,7 @@ import { postMyProduct } from "../../../store/products/thunks";
 import { clearMyProduct } from "../../../store/products/productsSlice";
 import { selectMyProductStatus } from "../../../store/products/selectors";
 import { asyncOptionsLoader } from "../../../services/api/calls";
-import { DialogWrapper, AsyncFormWrapper, AddProductForm } from "../../index";
+import { DialogWrapper, AsyncFormWrapper, ProductForm } from "../../index";
 import add from "../../../images/add.png";
 
 import styles from "../Menu.module.css";
@@ -45,7 +45,7 @@ function MenuItemAddProduct() {
           - товар уже существует
           - нет Интернет соединения`}
         >
-          <AddProductForm
+          <ProductForm
             submitFormHandler={submitFormHandler}
             asyncOptionsLoader={asyncOptionsLoader}
           />

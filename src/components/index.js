@@ -24,8 +24,7 @@ import NavBarPerPage from "./Pagination/NavBarPerPage/NavBarPerPage.jsx";
 import NavBarBottom from "./Pagination/NavBarBottom/NavBarBottom.jsx";
 
 // FORMS
-import AddProductForm from "./Form/AddProductForm/AddProductForm.jsx";
-import EditProductForm from "./Form/EditProductForm/EditProductForm .jsx";
+import ProductForm from "./Form/ProductForm/ProductForm.jsx";
 
 // UI
 import AsyncSel from "./UI/AsyncSel/AsyncSel.jsx";
@@ -53,8 +52,7 @@ export {
   NavBarGoToPage,
   NavBarPerPage,
   NavBarBottom,
-  AddProductForm,
-  EditProductForm,
+  ProductForm,
   AsyncSel,
   MultiSelect,
   InputLine,

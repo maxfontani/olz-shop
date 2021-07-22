@@ -19,6 +19,11 @@ function OrdersPage() {
   const [byId, setById] = useState(false);
   const noOrders = status === "success" && ordersArr.length === 0;
 
+  const showAllHistory = () => {
+    setById(false);
+    dispatch(fetchOrdersHistory());
+  };
+
   useEffect(() => {
     dispatch(fetchOrdersHistory());
   }, []);
@@ -29,12 +34,7 @@ function OrdersPage() {
   };
 
   if (status === "error")
-    return (
-      <MessageError
-        message={`Ошибка соединения.
-      ${error}`}
-      />
-    );
+    return <MessageError message={`Ошибка соединения. ${error}`} />;
 
   return (
     <>
@@ -59,10 +59,7 @@ function OrdersPage() {
           {byId && (
             <button
               className={styles.showAllOrdersButton}
-              onClick={() => {
-                setById(false);
-                dispatch(fetchOrdersHistory());
-              }}
+              onClick={showAllHistory}
             >
               Показать всю историю
             </button>

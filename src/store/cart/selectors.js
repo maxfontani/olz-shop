@@ -1,4 +1,5 @@
 import { createSelector } from "reselect";
+import { calcTotalPrice } from "../../utils/helpers";
 
 export const selectCartArr = (state) => Object.entries(state.cart);
 export const selectCartItems = (state) => Object.values(state.cart);
@@ -11,14 +12,15 @@ export const selectCartLength = createSelector(
   (arr) => arr.length,
 );
 
-export const selectCartTotalPrice = createSelector(
-  selectCartLength,
-  selectCartItems,
-  (length, items) => {
-    if (length === 0) return 0;
-    const totalCartPrice = items.reduce((acc, cur) => {
-      return acc + cur.product.price * cur.count;
-    }, 0);
-    return totalCartPrice;
-  },
+export const selectCartTotalPrice = createSelector(selectCartItems, (items) =>
+  calcTotalPrice(items),
 );
+
+export const selectCartOrder = createSelector(selectCartArr, (cartArr) => {
+  const order = { pieces: [] };
+  order.pieces = cartArr.map((entry) => {
+    const [id, value] = entry;
+    return { productId: id, count: value.count };
+  });
+  return order;
+});

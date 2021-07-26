@@ -10,3 +10,8 @@ export const {
 export const selectShop = (state) => state.shop;
 
 export const selectShopTotal = createSelector(selectShop, (shop) => shop.total);
+
+export const selectShopStatus = createSelector(selectShop, (shop) => [
+  shop.status,
+  shop.error,
+]);

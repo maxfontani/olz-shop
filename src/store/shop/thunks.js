@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import yalantisApi from "../../services/api/axios";
+import { initialState } from "../filters/filtersSlice";
+import { yalantisApi, yalantisApiAuth } from "../../services/api/axios";
 
 export const fetchShopPage = createAsyncThunk(
   "shop/fetchShopPage",
@@ -10,18 +11,29 @@ export const fetchShopPage = createAsyncThunk(
       minPrice: params.minPrice,
       maxPrice: params.maxPrice,
       origins: params.origins,
+      editable: params.editable || false,
     };
-    try {
-      const response = await yalantisApi.get("/products", {
-        params: {
-          ...query,
-        },
-      });
-      return response.data;
-    } catch (error) {
-      return error;
-    }
+
+    const api = query.editable ? yalantisApiAuth : yalantisApi;
+    const response = await api.get("/products", {
+      params: {
+        ...query,
+      },
+    });
+    return response.data;
   },
 );
 
-export default fetchShopPage;
+export const fetchInitialShopPage = createAsyncThunk(
+  "shop/fetchInitialShopPage",
+  async (editable) => {
+    const query = { ...initialState, editable };
+    const api = query.editable ? yalantisApiAuth : yalantisApi;
+    const response = await api.get("/products", {
+      params: {
+        ...query,
+      },
+    });
+    return response.data;
+  },
+);

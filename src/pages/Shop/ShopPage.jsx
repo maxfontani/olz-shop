@@ -1,7 +1,12 @@
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useQuery from "../../hooks/useQuery";
 import { fetchShopPage } from "../../store/shop/thunks";
-import { selectAllProducts, selectShopTotal } from "../../store/shop/selectors";
+import {
+  selectAllProducts,
+  selectShopTotal,
+  selectShopStatus,
+} from "../../store/shop/selectors";
 import { selectFilters } from "../../store/filters/selectors";
 import {
   setFilters,
@@ -9,7 +14,7 @@ import {
   resetFilters,
 } from "../../store/filters/filtersSlice";
 import { stringifyParamsArr, calcLastPage } from "../../utils/helpers";
-import Pagination from "../../components/Pagination/Pagination.jsx";
+import { Pagination, MessageError } from "../../components/index";
 import ProductHub from "./ProductHub/ProductHub.jsx";
 import ShopSidebar from "./ShopSidebar/ShopSidebar.jsx";
 
@@ -21,6 +26,13 @@ function ShopPage() {
   const filters = useSelector(selectFilters);
   const total = useSelector(selectShopTotal);
   const lastPage = calcLastPage(total, filters.perPage);
+  const [shopStatus, shopError] = useSelector(selectShopStatus);
+  const query = useQuery();
+  const editable = query.get("editable");
+
+  useEffect(() => {
+    dispatch(fetchShopPage({ ...filters, editable }));
+  }, [filters, editable]);
 
   const setPageHandler = (navPage) => {
     dispatch(setFiltersPage(navPage));
@@ -54,10 +66,6 @@ function ShopPage() {
     dispatch(resetFilters());
   }, []);
 
-  useEffect(() => {
-    dispatch(fetchShopPage(filters));
-  }, [filters]);
-
   return (
     <div className={styles.split}>
       <ShopSidebar
@@ -68,6 +76,9 @@ function ShopPage() {
         onSubmit={sidebarMultiSelectSubmitHandler}
         onReset={onResetFilters}
       />
+      {shopStatus === "error" && (
+        <MessageError message={`Ошибка соединения. ${shopError}`} />
+      )}
       {products.length > 0 && (
         <Pagination
           showNavBars={"both"}
@@ -78,7 +89,7 @@ function ShopPage() {
           nextPageHandler={nextPageHandler}
           lastPage={lastPage}
         >
-          <ProductHub products={products} />{" "}
+          <ProductHub products={products} filters={filters} />{" "}
         </Pagination>
       )}
     </div>

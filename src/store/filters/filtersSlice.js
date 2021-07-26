@@ -2,12 +2,13 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+export const initialState = {
   page: 1,
   perPage: 50,
   origins: "",
   minPrice: "",
   maxPrice: "",
+  editable: false,
 };
 
 export const filtersSlice = createSlice({
@@ -38,7 +39,11 @@ export const filtersSlice = createSlice({
       const maxPrice = action.payload;
       state.maxPrice = maxPrice;
     },
-    RESET: (state) => initialState,
+    SET_EDITABLE: (state, action) => {
+      const editable = action.payload;
+      return { ...initialState, editable };
+    },
+    RESET: (_) => initialState,
   },
 });
 
@@ -49,6 +54,7 @@ export const {
   SET_ORIGINS: setFiltersOrigins,
   SET_MIN_PRICE: setFiltersMinPrice,
   SET_MAX_PRICE: setFiltersMaxPrice,
+  SET_EDITABLE: setFiltersEditable,
   RESET: resetFilters,
 } = filtersSlice.actions;
 

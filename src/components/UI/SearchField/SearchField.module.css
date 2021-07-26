@@ -1,0 +1,25 @@
+.searchFieldOuter {
+  display: flex;
+  flex-flow: column nowrap;
+  margin: 15px 0 15px;
+}
+
+.searchField {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchFieldButton {
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+}
+
+.searchFieldInput {
+  box-sizing: border-box;
+  width: 175px;
+  height: 32px;
+}

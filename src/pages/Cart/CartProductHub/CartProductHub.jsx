@@ -1,7 +1,6 @@
 import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { CartProductCard } from "../../../components/index";
-import { selectCartArr } from "../../../store/cart/selectors";
 import {
   decrementById,
   removeById,
@@ -10,8 +9,7 @@ import {
 
 import styles from "./CartProductHub.module.css";
 
-function CartProductHub() {
-  const cartArr = useSelector(selectCartArr);
+function CartProductHub({ cartArr }) {
   const dispatch = useDispatch();
   const onDecr = useCallback((id) => {
     dispatch(decrementById(id));

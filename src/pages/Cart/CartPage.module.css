@@ -1,0 +1,25 @@
+.orderBtn {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  text-align: center;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #fff;
+  background-color: #00a046;
+  cursor: pointer;
+  width: 150px;
+  height: 32px;
+  line-height: 32px;
+  transition: all 0.2s ease-in-out;
+  font-size: 14px;
+  font-family: BlinkMacSystemFont, -apple-system, Arial, Segoe UI, Roboto,
+    Helvetica, sans-serif;
+}
+
+.orderBtn:hover {
+  background-color: #00bc52;
+  text-decoration: none;
+}

@@ -1,4 +1,4 @@
-/* eslint no-param-reassign: ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }] */
+/* eslint no-param-reassign: ["off", { "props": true, "ignorePropertyModificationsFor": ["state"] }] */
 
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -40,6 +40,7 @@ export const cartSlice = createSlice({
       const id = action.payload;
       if (id in state) delete state[id];
     },
+    CLEARED: (_) => initialState,
   },
 });
 
@@ -49,6 +50,7 @@ export const {
   INCREMENTED_BY_ID: incrementById,
   DECREMENTED_BY_ID: decrementById,
   REMOVED_BY_ID: removeById,
+  CLEARED: clearCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

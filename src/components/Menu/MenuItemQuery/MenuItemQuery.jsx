@@ -6,7 +6,7 @@ import styles from "../Menu.module.css";
 function MenuItemQuery({ to, title, query, children, clickHandler }) {
   const isActiveHandler = useCallback(
     (match, location) => {
-      if (match && match.isExact && location.search === query) {
+      if (match && match.isExact && location.search.includes(query)) {
         return true;
       }
       return false;

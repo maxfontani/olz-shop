@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useHistory } from "react-router-dom";
 import CartProductHub from "./CartProductHub/CartProductHub.jsx";
-import { placeOrder } from "../../store/orders/thunks";
-import { clearMyProduct } from "../../store/products/productsSlice";
+// import { placeOrder } from "../../store/orders/thunks";
+import { placeOrder } from "../../store/orders/sagas";
 import { selectMyOrderStatus } from "../../store/orders/selectors";
 import { AsyncFormWrapper, DialogWrapper } from "../../components/index";
 import {
@@ -27,7 +27,9 @@ function CartPage() {
   const hasProducts = totalPrice > 0;
 
   const processOrder = (orderObj) => {
-    dispatch(placeOrder({ orderObj, dispatch }));
+    // Changed logic according to HM#4
+    // dispatch(placeOrder({ orderObj, dispatch }));
+    dispatch(placeOrder(orderObj));
     setShowDialog(true);
   };
 

@@ -1,3 +1,7 @@
+/* eslint prefer-rest-params: ["off"] */
+/* eslint no-alert: ["off"] */
+/* eslint func-names: ["off"] */
+
 export function getLabelByOrigin(origin) {
   switch (origin) {
     case "africa" || "Africa":
@@ -23,10 +27,15 @@ export function stringifyParamsArr(arr) {
   return str;
 }
 
+// Receives Array e.g. ["usa","asia"]
+// Returns Array e.g. [{value: "usa", label: "USA"}, {value: "asia", label: "Asia"}]
 export function originsToSelectOptions(arr) {
   if (!arr || typeof arr !== "object" || !arr.length) return [];
   const originsSelect = arr.map((val) => {
-    return { value: val.value, label: getLabelByOrigin(val.value) };
+    return {
+      value: val.value || val,
+      label: getLabelByOrigin(val.value || val),
+    };
   });
   return originsSelect;
 }
@@ -54,3 +63,14 @@ export function calcTotalPrice(productArr) {
 export function copyToClipboard(text) {
   window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
 }
+
+export const debounce = (fn, ms) => {
+  let timeout;
+  return function () {
+    const fnCall = () => {
+      fn.apply(this, arguments);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(fnCall, ms);
+  };
+};

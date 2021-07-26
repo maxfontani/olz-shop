@@ -1,14 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import useQuery from "../../../hooks/useQuery";
 import { Space, MultiSelect } from "../../../components/index";
+import { originsToSelectOptions } from "../../../utils/helpers";
 
 import styles from "./ShopSidebar.module.css";
-
-const defaultValues = {
-  origins: [],
-  minPrice: "",
-  maxPrice: "",
-};
 
 const multiSelectOptions = [
   { value: "africa", label: "Африка" },
@@ -17,7 +13,26 @@ const multiSelectOptions = [
   { value: "usa", label: "США" },
 ];
 
+const initialValues = {
+  origins: [],
+  minPrice: "",
+  maxPrice: "",
+};
+
 function ShopSidebar({ onChangeMultiSelect, onSubmit, onReset }) {
+  const query = useQuery();
+  const qEditable = query.get("editable");
+  let qOrigins = query.get("origins")?.split(",");
+  if (qOrigins && qOrigins[0]) {
+    qOrigins = originsToSelectOptions(qOrigins);
+  }
+
+  const defaultValues = {
+    origins: qOrigins || [],
+    minPrice: query.get("minPrice") || "",
+    maxPrice: query.get("maxPrice") || "",
+  };
+
   const {
     register,
     getValues,
@@ -26,10 +41,28 @@ function ShopSidebar({ onChangeMultiSelect, onSubmit, onReset }) {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    mode: "onBlur",
+    mode: "onChange",
     defaultValues,
   });
-  const onHandleSubmit = useCallback(() => handleSubmit(onSubmit)(), []);
+
+  useEffect(() => {
+    if (qEditable === null) reset(initialValues);
+  }, [qEditable]);
+
+  const renderPriceErrors = () => {
+    if (errors.minPrice)
+      return <span className={styles.errMsg}>{errors.minPrice.message}</span>;
+    if (errors.maxPrice)
+      return <span className={styles.errMsg}>{errors.maxPrice.message}</span>;
+    return null;
+  };
+
+  const resetAll = () => {
+    onReset();
+    reset(initialValues);
+  };
+
+  const runSubmit = () => handleSubmit(onSubmit)();
 
   return (
     <div className={styles.sidebar}>
@@ -37,7 +70,7 @@ function ShopSidebar({ onChangeMultiSelect, onSubmit, onReset }) {
         <Space size="xs" />
         <b>Фильтры:</b>
         <Space size="s" />
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
           <label>Цена:</label>
           <div className={styles.sidebarPrice}>
             <input
@@ -52,7 +85,7 @@ function ShopSidebar({ onChangeMultiSelect, onSubmit, onReset }) {
                   message: "Укажите цены от нижней до верхней.",
                 },
               })}
-              onBlur={onHandleSubmit}
+              onBlur={runSubmit}
             />
             &nbsp;-&nbsp;
             <input
@@ -65,15 +98,10 @@ function ShopSidebar({ onChangeMultiSelect, onSubmit, onReset }) {
                   message: "Укажите цены от нижней до верхней.",
                 },
               })}
-              onBlur={onHandleSubmit}
+              onBlur={runSubmit}
             />
           </div>
-          {errors.minPrice && (
-            <span className={styles.errMsg}>{errors.minPrice.message}</span>
-          )}
-          {errors.maxPrice && !errors.minPrice && (
-            <span className={styles.errMsg}>{errors.maxPrice.message}</span>
-          )}
+          {renderPriceErrors()}
           <Space size="s" />
           <div className={styles.multiSelect}>
             <label>Континент:</label>
@@ -84,14 +112,7 @@ function ShopSidebar({ onChangeMultiSelect, onSubmit, onReset }) {
             />
           </div>
           <Space size="xs" />
-          <button
-            className={styles.clearBtn}
-            type="button"
-            onClick={() => {
-              onReset();
-              reset(defaultValues);
-            }}
-          >
+          <button className={styles.clearBtn} type="button" onClick={resetAll}>
             Сбросить все
           </button>
         </form>

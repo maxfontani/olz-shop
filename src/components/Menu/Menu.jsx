@@ -1,6 +1,9 @@
 import { memo } from "react";
 import { useDispatch } from "react-redux";
-import { setFiltersEditable } from "../../store/filters/filtersSlice";
+import {
+  setFilters,
+  initialState as initialFilters,
+} from "../../store/filters/filtersSlice";
 import MenuItem from "./MenuItem/MenuItem.jsx";
 import MenuItemQuery from "./MenuItemQuery/MenuItemQuery.jsx";
 import MenuItemCart from "./MenuItemCart/MenuItemCart.jsx";
@@ -11,7 +14,7 @@ import styles from "./Menu.module.css";
 function Menu({ location, totalPrice }) {
   const dispatch = useDispatch();
   const filterEditable = (bool) => {
-    dispatch(setFiltersEditable(bool));
+    dispatch(setFilters({ ...initialFilters, editable: bool }));
   };
   return (
     <div className={styles.menu}>
@@ -20,14 +23,14 @@ function Menu({ location, totalPrice }) {
         <MenuItemQuery
           to="/products"
           title="Магазин"
-          query=""
+          query="editable=false"
           clickHandler={() => filterEditable(false)}
         />
         <MenuItemAddProduct />
         <MenuItemQuery
-          to="/products?editable=true"
+          to="/products"
           title="Мои Товары"
-          query="?editable=true"
+          query="editable=true"
           clickHandler={() => filterEditable(true)}
         />
         {location.pathname !== "/cart" && (

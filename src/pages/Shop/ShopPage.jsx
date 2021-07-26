@@ -1,4 +1,5 @@
-import { useEffect, useCallback } from "react";
+import { useState, useLayoutEffect, useCallback } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import useQuery from "../../hooks/useQuery";
 import { fetchShopPage } from "../../store/shop/thunks";
@@ -13,7 +14,11 @@ import {
   setFiltersPage,
   resetFilters,
 } from "../../store/filters/filtersSlice";
-import { stringifyParamsArr, calcLastPage } from "../../utils/helpers";
+import {
+  stringifyParamsArr,
+  calcLastPage,
+  debounce,
+} from "../../utils/helpers";
 import { Pagination, MessageError } from "../../components/index";
 import ProductHub from "./ProductHub/ProductHub.jsx";
 import ShopSidebar from "./ShopSidebar/ShopSidebar.jsx";
@@ -21,20 +26,61 @@ import ShopSidebar from "./ShopSidebar/ShopSidebar.jsx";
 import styles from "./ShopPage.module.css";
 
 function ShopPage() {
+  const history = useHistory();
+  const location = useLocation();
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts);
   const filters = useSelector(selectFilters);
   const total = useSelector(selectShopTotal);
   const lastPage = calcLastPage(total, filters.perPage);
   const [shopStatus, shopError] = useSelector(selectShopStatus);
+  const [firstLoad, setFirstLoad] = useState(true);
   const query = useQuery();
-  const editable = query.get("editable");
 
-  useEffect(() => {
-    dispatch(fetchShopPage({ ...filters, editable }));
-  }, [filters, editable]);
+  const getUrlParams = () => {
+    const params = {};
+    Object.keys(filters).forEach((key) => {
+      let qValue = query.get(key);
+      if (qValue) {
+        if (key === "page" || key === "perPage") qValue = Number(qValue);
+        if (qValue !== filters[key]) params[key] = qValue;
+      }
+    });
+    return params;
+  };
+
+  const setUrlParams = () => {
+    const params = new URLSearchParams({
+      page: filters.page,
+      perPage: filters.perPage,
+      minPrice: filters.minPrice,
+      maxPrice: filters.maxPrice,
+      editable: filters.editable,
+      origins: filters.origins,
+    });
+    history.replace({
+      pathname: location.pathname,
+      search: params.toString(),
+    });
+  };
+
+  useLayoutEffect(() => {
+    if (firstLoad) {
+      const qFilters = getUrlParams();
+      if (Object.keys(qFilters).length) {
+        dispatch(setFilters({ ...filters, ...qFilters }));
+      } else {
+        dispatch(fetchShopPage(filters));
+      }
+      setFirstLoad(false);
+    } else {
+      setUrlParams();
+      dispatch(fetchShopPage(filters));
+    }
+  }, [filters]);
 
   const setPageHandler = (navPage) => {
+    query.set("page", "navPage");
     dispatch(setFiltersPage(navPage));
   };
 
@@ -50,17 +96,24 @@ function ShopPage() {
     dispatch(setFiltersPage(filters.page + 1));
   };
 
-  const sidebarMultiSelectChangeHandler = (selection) => {
+  const sidebarSelectChangeHandler = (selection) => {
     const originsArr = selection.map((item) => item.value);
     const originsStr = stringifyParamsArr(originsArr);
     dispatch(setFilters({ page: 1, origins: originsStr }));
   };
 
-  const sidebarMultiSelectSubmitHandler = (data) => {
+  const sidebarSelectChangeHandlerDebounced = debounce(
+    sidebarSelectChangeHandler,
+    1000,
+  );
+
+  const sidebarSubmitHandler = (data) => {
     dispatch(
       setFilters({ page: 1, minPrice: data.minPrice, maxPrice: data.maxPrice }),
     );
   };
+
+  const sidebarSubmitHandlerDebounced = debounce(sidebarSubmitHandler, 1000);
 
   const onResetFilters = useCallback(() => {
     dispatch(resetFilters());
@@ -71,9 +124,9 @@ function ShopPage() {
       <ShopSidebar
         filters={filters}
         onChangeMultiSelect={(selection) =>
-          sidebarMultiSelectChangeHandler(selection)
+          sidebarSelectChangeHandlerDebounced(selection)
         }
-        onSubmit={sidebarMultiSelectSubmitHandler}
+        onSubmit={sidebarSubmitHandlerDebounced}
         onReset={onResetFilters}
       />
       {shopStatus === "error" && (
@@ -89,7 +142,7 @@ function ShopPage() {
           nextPageHandler={nextPageHandler}
           lastPage={lastPage}
         >
-          <ProductHub products={products} filters={filters} />{" "}
+          <ProductHub products={products} filters={filters} />
         </Pagination>
       )}
     </div>

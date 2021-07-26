@@ -6,7 +6,7 @@ import {
   selectOrdersHistoryArr,
   selectOrdersHistoryStatus,
 } from "../../store/orders/selectors";
-import { fetchOrdersHistory, fetchOrderById } from "../../store/orders/thunks";
+import { fetchOrdersHistory } from "../../store/orders/thunks";
 import { Loader, MessageError, SearchField } from "../../components/index";
 import folderImg from "../../images/folder.png";
 
@@ -29,7 +29,9 @@ function OrdersPage() {
   }, []);
 
   const findOrder = (id) => {
-    if (id) dispatch(fetchOrderById(id));
+    // Changed logic according to HM#4
+    // if (id) dispatch(fetchOrderById(id));
+    if (id) dispatch({ type: "saga/FETCH_ORDER_BY_ID", payload: id });
     setById(true);
   };
 

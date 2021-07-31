@@ -1,14 +1,14 @@
-import { useState, useLayoutEffect, useCallback } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useQuery from "../../hooks/useQuery";
+import useQueryFilters from "../../hooks/useQueryFilters";
 import { fetchShopPage } from "../../store/shop/thunks";
+import { selectFilters } from "../../store/filters/selectors";
 import {
   selectAllProducts,
   selectShopTotal,
   selectShopStatus,
 } from "../../store/shop/selectors";
-import { selectFilters } from "../../store/filters/selectors";
+
 import {
   setFilters,
   setFiltersPage,
@@ -26,61 +26,23 @@ import ShopSidebar from "./ShopSidebar/ShopSidebar.jsx";
 import styles from "./ShopPage.module.css";
 
 function ShopPage() {
-  const history = useHistory();
-  const location = useLocation();
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts);
   const filters = useSelector(selectFilters);
+  const qFilters = useQueryFilters(filters);
   const total = useSelector(selectShopTotal);
   const lastPage = calcLastPage(total, filters.perPage);
   const [shopStatus, shopError] = useSelector(selectShopStatus);
-  const [firstLoad, setFirstLoad] = useState(true);
-  const query = useQuery();
 
-  const getUrlParams = () => {
-    const params = {};
-    Object.keys(filters).forEach((key) => {
-      let qValue = query.get(key);
-      if (qValue) {
-        if (key === "page" || key === "perPage") qValue = Number(qValue);
-        if (qValue !== filters[key]) params[key] = qValue;
-      }
-    });
-    return params;
-  };
-
-  const setUrlParams = () => {
-    const params = new URLSearchParams({
-      page: filters.page,
-      perPage: filters.perPage,
-      minPrice: filters.minPrice,
-      maxPrice: filters.maxPrice,
-      editable: filters.editable,
-      origins: filters.origins,
-    });
-    history.replace({
-      pathname: location.pathname,
-      search: params.toString(),
-    });
-  };
-
-  useLayoutEffect(() => {
-    if (firstLoad) {
-      const qFilters = getUrlParams();
-      if (Object.keys(qFilters).length) {
-        dispatch(setFilters({ ...filters, ...qFilters }));
-      } else {
-        dispatch(fetchShopPage(filters));
-      }
-      setFirstLoad(false);
+  useEffect(() => {
+    if (qFilters) {
+      dispatch(setFilters({ ...filters, ...qFilters }));
     } else {
-      setUrlParams();
       dispatch(fetchShopPage(filters));
     }
   }, [filters]);
 
   const setPageHandler = (navPage) => {
-    query.set("page", "navPage");
     dispatch(setFiltersPage(navPage));
   };
 

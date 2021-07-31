@@ -116,7 +116,15 @@ export const ordersSlice = createSlice({
   },
 });
 
-export const { CLEARED: clearOrders, SET_HISTORY: setOrdersHistory } =
-  ordersSlice.actions;
+export const {
+  CLEARED: clearOrders,
+  SET_HISTORY: setOrdersHistory,
+  FETCH_ORDER_BY_ID_LOADING: fetchOrderByIdLoading,
+  FETCH_ORDER_BY_ID_SUCCEEDED: fetchOrderByIdSucceeded,
+  FETCH_ORDER_BY_ID_FAILED: fetchOrderByIdFailed,
+  PLACE_ORDER_LOADING: placeOrderLoading,
+  PLACE_ORDER_SUCCEEDED: placeOrderSucceeded,
+  PLACE_ORDER_FAILED: placeOrderFailed,
+} = ordersSlice.actions;
 
 export default ordersSlice.reducer;

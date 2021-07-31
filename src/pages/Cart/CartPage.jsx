@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useHistory } from "react-router-dom";
 import CartProductHub from "./CartProductHub/CartProductHub.jsx";
 // import { placeOrder } from "../../store/orders/thunks";
-import { placeOrder } from "../../store/orders/sagas";
+import { sagaOrdersActions } from "../../store/orders/sagas";
 import { selectMyOrderStatus } from "../../store/orders/selectors";
 import { AsyncFormWrapper, DialogWrapper } from "../../components/index";
 import {
@@ -18,6 +18,7 @@ import styles from "./CartPage.module.css";
 function CartPage() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { placeOrder } = sagaOrdersActions;
   const totalPrice = useSelector(selectCartTotalPrice);
   const cartArr = useSelector(selectCartArr);
   const cartOrder = useSelector(selectCartOrder);
@@ -63,7 +64,9 @@ function CartPage() {
         <div>
           <button
             className={styles.orderBtn}
-            onClick={() => processOrder(cartOrder, dispatch)}
+            // Changed logic according to HM#4
+            // onClick={() => processOrder(cartOrder, dispatch)}
+            onClick={() => processOrder(cartOrder)}
           >
             Оформить заказ
           </button>

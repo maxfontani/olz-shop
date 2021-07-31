@@ -1,31 +1,53 @@
-import { call, put } from "redux-saga/effects";
+import { createAction } from "@reduxjs/toolkit";
+import { call, put, takeEvery } from "redux-saga/effects";
 import { yalantisApiAuth } from "../../services/api/axios";
 import { clearCart } from "../cart/cartSlice";
+
+import {
+  fetchOrderByIdLoading,
+  fetchOrderByIdFailed,
+  fetchOrderByIdSucceeded,
+  placeOrderLoading,
+  placeOrderFailed,
+  placeOrderSucceeded,
+} from "./ordersSlice";
+
+export const sagaOrdersActions = {
+  fetchOrderById: createAction("orders/FETCH_ORDER_BY_ID"),
+  placeOrder: createAction("orders/PLACE_ORDER"),
+};
 
 export function* fetchOrderById(action) {
   try {
     const id = action.payload;
-    yield put({ type: "orders/FETCH_ORDER_BY_ID_LOADING" });
+    yield put(fetchOrderByIdLoading());
     const response = yield call(yalantisApiAuth.get, `/orders/${id}`);
     const data = response?.data;
-    yield put({ type: "orders/FETCH_ORDER_BY_ID_SUCCEEDED", payload: data });
+    yield put(fetchOrderByIdSucceeded(data));
   } catch (error) {
-    yield put({ type: "orders/FETCH_ORDER_BY_ID_FAILED", error });
+    yield put(fetchOrderByIdFailed(error));
   }
 }
 
 export function* placeOrder(action) {
   try {
     const orderObj = action.payload;
-    yield put({ type: "orders/PLACE_ORDER_LOADING" });
-    const response = yield call(yalantisApiAuth.post, [
-      "/orders",
-      { order: orderObj },
-    ]);
+    yield put(placeOrderLoading());
+    const response = yield call(yalantisApiAuth.post, "/orders/", {
+      order: orderObj,
+    });
     const data = response?.data;
     if (data.id) yield put(clearCart());
-    yield put({ type: "orders/PLACE_ORDER_SUCCEEDED", payload: data });
+    yield put(placeOrderSucceeded(data));
   } catch (error) {
-    yield put({ type: "orders/PLACE_ORDER_FAILED", error });
+    yield put(placeOrderFailed(error));
   }
+}
+
+export function* watchFetchOrderById() {
+  yield takeEvery(sagaOrdersActions.fetchOrderById().type, fetchOrderById);
+}
+
+export function* watchPlaceOrder() {
+  yield takeEvery(sagaOrdersActions.placeOrder().type, placeOrder);
 }

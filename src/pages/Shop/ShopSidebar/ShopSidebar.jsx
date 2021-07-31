@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import useQuery from "../../../hooks/useQuery";
+import useQueryObj from "../../../hooks/useQueryObj";
 import { Space, MultiSelect } from "../../../components/index";
 import { originsToSelectOptions } from "../../../utils/helpers";
 
@@ -20,17 +20,17 @@ const initialValues = {
 };
 
 function ShopSidebar({ onChangeMultiSelect, onSubmit, onReset }) {
-  const query = useQuery();
-  const qEditable = query.get("editable");
-  let qOrigins = query.get("origins")?.split(",");
+  const qObj = useQueryObj();
+  const qEditable = qObj.editable;
+  let qOrigins = qObj.origins?.split(",");
   if (qOrigins && qOrigins[0]) {
     qOrigins = originsToSelectOptions(qOrigins);
   }
 
   const defaultValues = {
     origins: qOrigins || [],
-    minPrice: query.get("minPrice") || "",
-    maxPrice: query.get("maxPrice") || "",
+    minPrice: qObj.minPrice || "",
+    maxPrice: qObj.maxPrice || "",
   };
 
   const {
@@ -46,7 +46,7 @@ function ShopSidebar({ onChangeMultiSelect, onSubmit, onReset }) {
   });
 
   useEffect(() => {
-    if (qEditable === null) reset(initialValues);
+    if (typeof qEditable !== "string") reset(initialValues);
   }, [qEditable]);
 
   const renderPriceErrors = () => {

@@ -1,7 +1,7 @@
 /* eslint no-param-reassign: ["off", { "props": true, "ignorePropertyModificationsFor": ["state"] }] */
 
 import { createSlice } from "@reduxjs/toolkit";
-import { placeOrder, fetchOrdersHistory, fetchOrderById } from "./thunks";
+import { fetchOrdersHistory } from "./thunks";
 
 const initialState = {
   history: {
@@ -25,40 +25,73 @@ export const ordersSlice = createSlice({
       state.history.order = orders;
     },
     CLEARED: (_) => initialState,
-  },
-  extraReducers: {
-    [placeOrder.pending]: (state) => {
-      state.myOrder.status = "loading";
-      state.myOrder.error = null;
-    },
-    [placeOrder.fulfilled]: (state, action) => {
-      if (state.myOrder.status === "loading") {
-        state.myOrder = action.payload;
-        state.myOrder.status = "success";
-      }
-    },
-    [placeOrder.rejected]: (state, action) => {
-      if (state.myOrder.status === "loading") {
-        state.myOrder.status = "error";
-        state.myOrder.error = action.error?.message;
-      }
-    },
-    [fetchOrderById.pending]: (state) => {
+    FETCH_ORDER_BY_ID_LOADING: (state) => {
       state.history.status = "loading";
       state.history.error = null;
     },
-    [fetchOrderById.fulfilled]: (state, action) => {
+    FETCH_ORDER_BY_ID_SUCCEEDED: (state, action) => {
       if (state.history.status === "loading") {
         state.history.status = "success";
         state.history.orders = [action.payload];
       }
     },
-    [fetchOrderById.rejected]: (state, action) => {
+    FETCH_ORDER_BY_ID_FAILED: (state, action) => {
       if (state.history.status === "loading") {
         state.history.status = "error";
         state.history.error = action.error?.message;
       }
     },
+    PLACE_ORDER_LOADING: (state) => {
+      state.myOrder.status = "loading";
+      state.myOrder.error = null;
+    },
+    PLACE_ORDER_SUCCEEDED: (state, action) => {
+      if (state.myOrder.status === "loading") {
+        state.myOrder = action.payload;
+        state.myOrder.status = "success";
+      }
+    },
+    PLACE_ORDER_FAILED: (state, action) => {
+      if (state.myOrder.status === "loading") {
+        state.myOrder.status = "error";
+        state.myOrder.error = action.error?.message;
+      }
+    },
+  },
+  extraReducers: {
+    // Changed logic according to HM#4
+    // [placeOrder.pending]: (state) => {
+    //   state.myOrder.status = "loading";
+    //   state.myOrder.error = null;
+    // },
+    // [placeOrder.fulfilled]: (state, action) => {
+    //   if (state.myOrder.status === "loading") {
+    //     state.myOrder = action.payload;
+    //     state.myOrder.status = "success";
+    //   }
+    // },
+    // [placeOrder.rejected]: (state, action) => {
+    //   if (state.myOrder.status === "loading") {
+    //     state.myOrder.status = "error";
+    //     state.myOrder.error = action.error?.message;
+    //   }
+    // },
+    // [fetchOrderById.pending]: (state) => {
+    //   state.history.status = "loading";
+    //   state.history.error = null;
+    // },
+    // [fetchOrderById.fulfilled]: (state, action) => {
+    //   if (state.history.status === "loading") {
+    //     state.history.status = "success";
+    //     state.history.orders = [action.payload];
+    //   }
+    // },
+    // [fetchOrderById.rejected]: (state, action) => {
+    //   if (state.history.status === "loading") {
+    //     state.history.status = "error";
+    //     state.history.error = action.error?.message;
+    //   }
+    // },
     [fetchOrdersHistory.pending]: (state) => {
       state.history.status = "loading";
       state.history.error = null;
@@ -83,7 +116,15 @@ export const ordersSlice = createSlice({
   },
 });
 
-export const { CLEARED: clearOrders, SET_HISTORY: setOrdersHistory } =
-  ordersSlice.actions;
+export const {
+  CLEARED: clearOrders,
+  SET_HISTORY: setOrdersHistory,
+  FETCH_ORDER_BY_ID_LOADING: fetchOrderByIdLoading,
+  FETCH_ORDER_BY_ID_SUCCEEDED: fetchOrderByIdSucceeded,
+  FETCH_ORDER_BY_ID_FAILED: fetchOrderByIdFailed,
+  PLACE_ORDER_LOADING: placeOrderLoading,
+  PLACE_ORDER_SUCCEEDED: placeOrderSucceeded,
+  PLACE_ORDER_FAILED: placeOrderFailed,
+} = ordersSlice.actions;
 
 export default ordersSlice.reducer;

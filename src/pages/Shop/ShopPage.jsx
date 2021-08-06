@@ -1,19 +1,24 @@
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useQuery from "../../hooks/useQuery";
+import useQueryFilters from "../../hooks/useQueryFilters";
 import { fetchShopPage } from "../../store/shop/thunks";
+import { selectFilters } from "../../store/filters/selectors";
 import {
   selectAllProducts,
   selectShopTotal,
   selectShopStatus,
 } from "../../store/shop/selectors";
-import { selectFilters } from "../../store/filters/selectors";
+
 import {
   setFilters,
   setFiltersPage,
   resetFilters,
 } from "../../store/filters/filtersSlice";
-import { stringifyParamsArr, calcLastPage } from "../../utils/helpers";
+import {
+  stringifyParamsArr,
+  calcLastPage,
+  debounce,
+} from "../../utils/helpers";
 import { Pagination, MessageError } from "../../components/index";
 import ProductHub from "./ProductHub/ProductHub.jsx";
 import ShopSidebar from "./ShopSidebar/ShopSidebar.jsx";
@@ -24,15 +29,18 @@ function ShopPage() {
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts);
   const filters = useSelector(selectFilters);
+  const qFilters = useQueryFilters(filters);
   const total = useSelector(selectShopTotal);
   const lastPage = calcLastPage(total, filters.perPage);
   const [shopStatus, shopError] = useSelector(selectShopStatus);
-  const query = useQuery();
-  const editable = query.get("editable");
 
   useEffect(() => {
-    dispatch(fetchShopPage({ ...filters, editable }));
-  }, [filters, editable]);
+    if (qFilters) {
+      dispatch(setFilters({ ...filters, ...qFilters }));
+    } else {
+      dispatch(fetchShopPage(filters));
+    }
+  }, [filters]);
 
   const setPageHandler = (navPage) => {
     dispatch(setFiltersPage(navPage));
@@ -50,17 +58,24 @@ function ShopPage() {
     dispatch(setFiltersPage(filters.page + 1));
   };
 
-  const sidebarMultiSelectChangeHandler = (selection) => {
+  const sidebarSelectChangeHandler = (selection) => {
     const originsArr = selection.map((item) => item.value);
     const originsStr = stringifyParamsArr(originsArr);
     dispatch(setFilters({ page: 1, origins: originsStr }));
   };
 
-  const sidebarMultiSelectSubmitHandler = (data) => {
+  const sidebarSelectChangeHandlerDebounced = debounce(
+    sidebarSelectChangeHandler,
+    1000,
+  );
+
+  const sidebarSubmitHandler = (data) => {
     dispatch(
       setFilters({ page: 1, minPrice: data.minPrice, maxPrice: data.maxPrice }),
     );
   };
+
+  const sidebarSubmitHandlerDebounced = debounce(sidebarSubmitHandler, 1000);
 
   const onResetFilters = useCallback(() => {
     dispatch(resetFilters());
@@ -71,9 +86,9 @@ function ShopPage() {
       <ShopSidebar
         filters={filters}
         onChangeMultiSelect={(selection) =>
-          sidebarMultiSelectChangeHandler(selection)
+          sidebarSelectChangeHandlerDebounced(selection)
         }
-        onSubmit={sidebarMultiSelectSubmitHandler}
+        onSubmit={sidebarSubmitHandlerDebounced}
         onReset={onResetFilters}
       />
       {shopStatus === "error" && (
@@ -89,7 +104,7 @@ function ShopPage() {
           nextPageHandler={nextPageHandler}
           lastPage={lastPage}
         >
-          <ProductHub products={products} filters={filters} />{" "}
+          <ProductHub products={products} filters={filters} />
         </Pagination>
       )}
     </div>

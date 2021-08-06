@@ -20,7 +20,7 @@ function OrdersHub({ ordersArr }) {
           const totalPrice = calcTotalPrice(pieces);
           return (
             <AccordionItem key={id}>
-              <AccordionButton>
+              <AccordionButton key={`${id} button`}>
                 {id}
                 <img
                   alt="copy"
@@ -33,11 +33,14 @@ function OrdersHub({ ordersArr }) {
                   }}
                 />
               </AccordionButton>
-              <AccordionPanel>
+              <AccordionPanel key={`${id} panel`}>
                 {pieces.map((productObj) => (
-                  <div className={styles.orderCardOuter}>
+                  <div
+                    className={styles.orderCardOuter}
+                    key={`${id} ${productObj.product.id} div`}
+                  >
                     <ProductViewCard
-                      key={productObj.product.id}
+                      key={`${id} ${productObj.product.id}`}
                       product={productObj.product}
                       count={productObj.count}
                     />

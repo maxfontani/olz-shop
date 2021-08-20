@@ -1,8 +1,14 @@
 {
-  "name": "yalantis-homework",
+  "name": "olz-shop",
   "version": "0.1.0",
   "type": "module",
   "private": true,
+  "cacheDirectories": [
+    "node_modules"
+  ],
+  "engines": {
+    "node": "14.x"
+  },
   "dependencies": {
     "@hookform/resolvers": "^2.6.1",
     "@reach/accordion": "^0.15.3",
@@ -71,11 +77,5 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0"
-  },
-  "cacheDirectories": [
-    "node_modules"
-  ],
-  "engines": {
-    "node": "14.x"
   }
 }

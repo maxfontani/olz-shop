@@ -1,11 +1,13 @@
 import { memo } from "react";
 import { NavLink } from "react-router-dom";
 import { format, parseJSON } from "date-fns";
-import cartButton from "../../../images/cart_button_green.png";
+import { getLabelByOrigin } from "../../../utils/helpers";
+import editButtonImg from "../../../images/edit.png";
+import cartButtonImg from "../../../images/cart_button_green.png";
 
 import styles from "./ProductCard.module.css";
 
-const ProductCard = ({ product, onClick }) => (
+const ProductCard = ({ product, onAddToCart, onOpenEdit }) => (
   <NavLink className={styles.navlink} to={`/products/${product.id}`}>
     <div className={styles.productCard}>
       <div className={styles.productCardTitle}>
@@ -15,18 +17,30 @@ const ProductCard = ({ product, onClick }) => (
       </div>
       <hr></hr>
       <p>{`${product.price} $`}</p>
-      <p>Origin: {product.origin}</p>
+      <p>{getLabelByOrigin(product.origin)}</p>
       <p>{format(parseJSON(product.updatedAt), "PP")}</p>
 
-      <img
-        alt="add to cart"
-        title="Add the product to cart."
-        aria-label="add to cart"
-        src={cartButton}
-        width="35"
-        height="30"
-        onClick={onClick}
-      />
+      {product.isEditable ? (
+        <img
+          alt="редактировать"
+          title="Редактировать товар."
+          aria-label="Редактировать товар."
+          src={editButtonImg}
+          width="32"
+          height="32"
+          onClick={(e) => onOpenEdit(e, product)}
+        />
+      ) : (
+        <img
+          alt="в корзину"
+          title="Добавить в корзину."
+          aria-label="Добавить товар в корзину."
+          src={cartButtonImg}
+          width="35"
+          height="30"
+          onClick={onAddToCart}
+        />
+      )}
     </div>
   </NavLink>
 );

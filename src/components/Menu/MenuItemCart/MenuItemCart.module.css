@@ -1,10 +1,10 @@
-.cartHeader {
+.menuHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.cartHeaderPrice {
+.MenuItemCartPrice {
   font-size: 12px;
   font-family: Consolas;
 }

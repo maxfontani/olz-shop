@@ -1,0 +1,76 @@
+.ordersHub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.orderCardOuter hr {
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 50%,
+    transparent 100%
+  );
+  border: 0;
+  height: 1px;
+  max-width: 250px;
+}
+
+.orderCardOuter:last-child > hr {
+  visibility: hidden;
+}
+[data-reach-accordion] {
+  width: 80%;
+  min-width: 360px;
+  max-width: 740px;
+}
+
+[data-reach-accordion-button] {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  font-size: 16px;
+  font-weight: 800;
+  height: 56px;
+  margin: 15px;
+  cursor: pointer;
+  width: 100%;
+  color: #444;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 2px 8px 12px 4px rgba(9, 30, 66, 0.3);
+}
+
+[data-reach-accordion-button]:hover,
+[data-reach-accordion-button][data-state="open"] {
+  text-align: center;
+  cursor: pointer;
+  border: 0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  background: #00d301;
+  background: -webkit-linear-gradient(-196deg, #00d301, #36c275 50%, #00a562);
+  background: -webkit-linear-gradient(164deg, #00d301, #36c275 50%, #00a562);
+  background: linear-gradient(286deg, #00d301, #36c275 50%, #00a562);
+  transition: background, color 0.1s ease-in-out;
+}
+
+[data-reach-accordion-button] img {
+  position: absolute;
+  right: 15px;
+}
+
+/* MOBILE */
+@media only screen and (max-width: 740px) {
+  [data-reach-accordion-button],
+  [data-reach-accordion-button]:hover,
+  [data-reach-accordion-button][data-state="open"] {
+    justify-content: flex-start;
+    font-size: 12px;
+    font-weight: 600;
+    padding-left: 20px;
+  }
+}
